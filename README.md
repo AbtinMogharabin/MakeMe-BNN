@@ -1,10 +1,21 @@
-# Paper title [@TODO: Change]
+# Make Me a BNN: A Simple Strategy for Estimating Bayesian Uncertainty from Pre-trained Models
 
-This readme file is an outcome of the [CENG502 (Spring 2024)](https://ceng.metu.edu.tr/~skalkan/ADL/) project for reproducing a paper without an implementation. See [CENG502 (Spring 2024) Project List](https://github.com/CENG502-Projects/CENG502-Spring2024) for a complete list of all paper reproduction projects.
+This readme file is an outcome of the [CENG502 (Spring 2024)](https://ceng.metu.edu.tr/~skalkan/ADL/) project for reproducing a paper without an implementation. See [CENG502 (Spring 2024) Project List](https://github.com/CENG502-Projects/CENG502-Spring2024) for a complete list of all paper reproduction projects. The public repository and commit history is available in the account here: https://github.com/AbtinMogharabin/MakeMe-BNN.
 
 # 1. Introduction
 
-@TODO: Introduce the paper (inc. where it is published) and describe your goal (reproducibility).
+The challenge of effectively quantifying uncertainty in predictions made by deep learning models, particularly Deep Neural Networks (DNNs), is crucial for their safe deployment in risk-sensitive environments. DNNs are typically deterministic, providing point estimates without any measure of confidence, which can lead to overconfident decisions in critical applications such as autonomous driving or medical diagnostics.
+
+
+Traditional Bayesian Neural Networks (BNNs) represent a probabilistic approach to neural networks where the weights are treated as random variables with specified prior distributions, rather than fixed values. This method allows BNNs to not only make predictions but also to estimate the uncertainty of these predictions by integrating over the possible configurations of weights. To compute these integrations, which are generally intractable due to the high dimensionality of the parameter space, BNNs typically employ approximation techniques like Variational Inference (VI) or Markov Chain Monte Carlo (MCMC). These methods, however, introduce significant computational overhead and complexity. VI, for instance, requires the selection of a tractable family of distributions that can limit the expressiveness of the model, while MCMC is computationally expensive and slow to converge, particularly for large datasets or complex network architectures.
+
+Given these challenges, the deployment of traditional BNNs in real-world applications, especially those requiring real-time operations or running on limited hardware, becomes impractical. The paper "Make Me a BNN: A Simple Strategy for Estimating Bayesian Uncertainty from Pre-trained Models" introduces an innovative approach, termed Adaptable Bayesian Neural Network (ABNN), which allows the conversion of existing pre-trained DNNs into BNNs. This conversion is achieved in a post-hoc manner—after the DNN has been trained—requiring minimal computational resources and avoiding extensive retraining.
+
+In other words, ABNN preserves the main predictive properties of DNNs while enhancing their uncertainty quantification abilities. The paper conducts extensive experiments across multiple datasets for image classification and semantic segmentation tasks, and demonstrate that ABNN achieves state-of-the-art performance without the computational budget typically associated with ensemble methods. The following figure shows a brief comparison of ABNN and a number of other uncertainty-based deep learning approaches in literature:
+
+<img src="Images/ABNN-Brief-Evaluation.png" alt="Image" width="850" height="350">
+
+In this repository, we make an effort to reproduce the methods and results of the paper based on the descriptions provided.
 
 ## 1.1. Paper summary
 
