@@ -13,7 +13,9 @@ Given these challenges, the deployment of traditional BNNs in real-world applica
 
 In other words, ABNN preserves the main predictive properties of DNNs while enhancing their uncertainty quantification abilities. The paper conducts extensive experiments across multiple datasets for image classification and semantic segmentation tasks, and demonstrate that ABNN achieves state-of-the-art performance without the computational budget typically associated with ensemble methods. The following figure shows a brief comparison of ABNN and a number of other uncertainty-based deep learning approaches in literature:
 
-<img src="Images/ABNN-Brief-Evaluation.png" alt="Image" width="800" height="320">
+<div align="center">
+    <img src="Images/ABNN-Brief-Evaluation.png" alt="Image" width="800" height="320">
+</div>
 
 In this repository, we make an effort to reproduce the methods and results of the paper based on the descriptions provided.
 
