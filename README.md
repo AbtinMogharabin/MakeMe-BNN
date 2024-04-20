@@ -71,6 +71,7 @@ The BNL is the core of the ABNN approach, which adapts conventional normalizatio
 $$
 u_j = \text{BNL}(W_j h_{j-1})
 $$
+
 $$
 \text{BNL}(h_j) = \frac{(h_j - \hat{\mu}_j)}{\hat{\sigma}_j} \cdot \gamma_j (1 + \epsilon_j) + \beta_j
 $$
