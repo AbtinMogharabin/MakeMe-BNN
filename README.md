@@ -52,6 +52,20 @@ The key contributions of this paper are as follows:
 
 @TODO: Describe the setup of the original paper and whether you changed any settings.
 
+There are mulitple datasets: 
+
+1- CIFAR-10 and CIFAR-100 for ResNet-50 and WideResNet28-10.  https://www.cs.toronto.edu/~kriz/cifar.html
+
+2- ImageNet whichthey reported the results for ABNN on it with ResNet-50 and ViT. https://www.image-net.org/download.php
+
+They used the datesets and transform the initial problem into binary classification between in-distribution
+and out-of-distribution data using the maximum softmax probability as the criterion.
+
+3- SVHN dataset as the out-of-distribution dataset for OOD detection tasks on CIFAR-10 and CIFAR-100. http://ufldl.stanford.edu/housenumbers/
+
+4- Describable Texture as the out-of-distribution dataset on ImageNet. https://www.robots.ox.ac.uk/~vgg/data/dtd/
+
+
 ## 3.2. Running the code
 
 @TODO: Explain your code & directory structure and how other people can run it.
