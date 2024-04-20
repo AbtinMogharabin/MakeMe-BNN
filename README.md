@@ -62,7 +62,7 @@ The paper conducts a multi-step theoreical analysis on the model key elements. E
 After these modifications, the general model training procedure is as follows:
 
 <div align="center">
-    <img src="Images/Training-Procedure.png" alt="Image" width="400" height="600">
+    <img src="Images/Training-Procedure.png" alt="Image" width="400" height="580">
 </div>
 
 ### 2.1.2  Bayesian Normalization Layers (BNLs)
@@ -117,15 +117,18 @@ $$
 
 ### 2.1.4  Inference with ABNN
 
-During inference, ABNN uses the stochastic nature of BNLs to generate a predictive distribution over outputs for given inputs. They achieved this by sampling from the Gaussian noise components $\epsilon_j$ during each forward pass, thus generating different outputs for the same input:
+During inference, ABNN uses the stochastic nature of BNLs to generate a predictive distribution over outputs for given inputs. They achieved this by sampling from the Gaussian noise components $\epsilon_j$ during each forward pass, thus generating different outputs for the same input. In the end, ABNN averages the results of multiple such stochastic passes and obtains a single prediction.
 
 $$
-P(y | x, D) \approx \frac{1}{M} \sum_{m=1}^M P(y | x, \omega_m)
+P(y | x, D) \approx \frac{1}{ML} \sum_{l=1}^L \sum_{m=1}^M P(y | x, \omega_m, \epsilon_l)
 $$
 
 Where:
-- $M$: Number of Monte Carlo samples or network forward passes with different noise realizations.
-- $\omega_m$: Model parameters during the $m$-th forward pass with a specific realization of $\epsilon_j$.
+- $P(y | x, D)$: The probbility of the output (y) depending on the input (x) and the whole training dataset (D).
+- $M$: Number of models (ensemble members).
+- $L$: Number of noise samples (stochastic forward passes).
+- $\omega_m$: Parameters of the $m$-th model configuration.
+- $\epsilon_l$: Noise vector sampled for the $l$-th stochastic forward pass.
 
 ## 2.2. Our interpretation 
 
