@@ -28,20 +28,16 @@ The ABNN approach starts with a pre-trained DNN and transforms it into a Bayesia
 
 The key contributions of this paper are as follows:
 
-- ABNN provides a scalable way to estimate uncertainty by leveraging pre-trained models and transforming them with minimal computational cost. This approach circumvents the traditionally high resource demands of training BNNs from scratch or employing ensemble methods.
-- The method is compatible with multiple neural network architectures such ResNet-50, WideResnet28-10; and ViTs. The only requirement for ABNN to have compatiblity with a DNN architectures is that the DNN should include normalization layers (such as batch, layer, or instance normalization). This is not a limiting factor as most modern architectures include one type of these layers
-- ABNN can estimate the posterior distribution around the local minimum of the pre-trained model in a resource efficient manner while still achieving competitive uncertainty estimates with diversity. The results indicate that ABNN achieves comparable or superior performance in uncertainty estimation and predictive accuracy compared to existing state-of-the-art methods like Deep Ensembles and other Bayesian methods in both in- and out-of-distribution settings
-- Stability and Performance: It is noted that ABNN offers more stable training dynamics compared to traditional BNNs, which are often plagued by training instabilities. The use of Bayesian Normalization Layers helps mitigate these issues, providing a smoother training process and robustness in performance.
-- ABNN allows for sequential training of multiple BNNs starting from the same checkpoint, thus modeling various modes within the true posterior distribution.
-- It is also observed that the variance of the gradient for ABNN’s parameters is lower compared to that of a classic BNN, resulting in a more stable backpropagation.
-- Based on my review, this paper demonstrates one of the very few efforts on translating a deterministic model into a bayesian version after the training of the deterministic model is finished. To name 2 most relevant approaches:
-
+1. ABNN provides a scalable way to estimate uncertainty by leveraging pre-trained models and transforming them with minimal computational cost. This approach circumvents the traditionally high resource demands of training BNNs from scratch or employing ensemble methods.
+2. The method is compatible with multiple neural network architectures such ResNet-50, WideResnet28-10; and ViTs. The only requirement for ABNN to have compatiblity with a DNN architectures is that the DNN should include normalization layers (such as batch, layer, or instance normalization). This is not a limiting factor as most modern architectures include one type of these layers
+3. ABNN can estimate the posterior distribution around the local minimum of the pre-trained model in a resource efficient manner while still achieving competitive uncertainty estimates with diversity. The results indicate that ABNN achieves comparable or superior performance in uncertainty estimation and predictive accuracy compared to existing state-of-the-art methods like Deep Ensembles and other Bayesian methods in both in- and out-of-distribution settings
+4. Stability and Performance: It is noted that ABNN offers more stable training dynamics compared to traditional BNNs, which are often plagued by training instabilities. The use of Bayesian Normalization Layers helps mitigate these issues, providing a smoother training process and robustness in performance.
+5. ABNN allows for sequential training of multiple BNNs starting from the same checkpoint, thus modeling various modes within the true posterior distribution.
+6. It is also observed that the variance of the gradient for ABNN’s parameters is lower compared to that of a classic BNN, resulting in a more stable backpropagation.
+7. Based on my review, this paper demonstrates one of the very few efforts on translating a deterministic model into a bayesian version after the training of the deterministic model is finished. To name 2 most relevant approaches:
        - One paper employs deterministic variational inference techniques to integrate Bayesian methods into trained deterministic neural networks. It introduces closed-form variance priors for the network weights, allowing the deterministic model to handle uncertainty estimations through a robust Bayesian framework after its initial training [1].
-
 Compared to this approach that requires extensive modifications to the network’s inference process to accommodate the new Bayesian priors, the "Make Me a BNN" paper introduces a method that is notably simpler and potentially faster, as it leverages existing normalization layers within pre-trained DNNs to implement Bayesian functionality.
-
        - One other study involves a decoupled Bayesian stage applied to a pre-trained deterministic neural network. This method uses a Bayesian Neural Network to recalibrate the outputs of the deterministic model, thereby improving its predictive uncertainty without retraining the entire network from scratch [2]. 
-
 Again, unlike our the "Make Me a BNN" paper's straitforward and simple approach, this method, while effective for improving calibration, involves adding an entirely new Bayesian processing layer, which might not be as efficient or straightforward in terms of retrofitting existing models with Bayesian capabilities.
 
 
