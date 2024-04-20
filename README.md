@@ -13,7 +13,7 @@ Given these challenges, the deployment of traditional BNNs in real-world applica
 ABNN preserves the main predictive properties of DNNs while enhancing their uncertainty quantification abilities. The paper conducts extensive experiments across multiple datasets for image classification and semantic segmentation tasks, and demonstrates that ABNN achieves state-of-the-art performance without the computational budget typically associated with ensemble methods. The following figure shows a brief comparison of ABNN and a number of other uncertainty-based deep learning approaches in literature:
 
 <div align="center">
-    <img src="Images/ABNN-Brief-Evaluation.png" alt="Image" width="800" height="320">
+    <img src="Images/Brief-Evaluation.png" alt="Image" width="800" height="320">
 </div>
 
 In this repository, we make an effort to reproduce the methods and results of the paper based on the descriptions provided.
@@ -36,11 +36,11 @@ The key contributions of this paper are as follows:
 - It is also observed that the variance of the gradient for ABNN’s parameters is lower compared to that of a classic BNN, resulting in a more stable backpropagation.
 - Based on my review, this paper demonstrates one of the very few efforts on translating a deterministic model into a bayesian version after the training of the deterministic model is finished. To name 2 most relevant approaches:
 
-      1.  One paper employs deterministic variational inference techniques to integrate Bayesian methods into trained deterministic neural networks. It introduces closed-form variance priors for the network weights, allowing the deterministic model to handle uncertainty estimations through a robust Bayesian framework after its initial training [1].
+       - One paper employs deterministic variational inference techniques to integrate Bayesian methods into trained deterministic neural networks. It introduces closed-form variance priors for the network weights, allowing the deterministic model to handle uncertainty estimations through a robust Bayesian framework after its initial training [1].
 
 Compared to this approach that requires extensive modifications to the network’s inference process to accommodate the new Bayesian priors, the "Make Me a BNN" paper introduces a method that is notably simpler and potentially faster, as it leverages existing normalization layers within pre-trained DNNs to implement Bayesian functionality.
 
-      2. One other study involves a decoupled Bayesian stage applied to a pre-trained deterministic neural network. This method uses a Bayesian Neural Network to recalibrate the outputs of the deterministic model, thereby improving its predictive uncertainty without retraining the entire network from scratch [2]. 
+       - One other study involves a decoupled Bayesian stage applied to a pre-trained deterministic neural network. This method uses a Bayesian Neural Network to recalibrate the outputs of the deterministic model, thereby improving its predictive uncertainty without retraining the entire network from scratch [2]. 
 
 Again, unlike our the "Make Me a BNN" paper's straitforward and simple approach, this method, while effective for improving calibration, involves adding an entirely new Bayesian processing layer, which might not be as efficient or straightforward in terms of retrofitting existing models with Bayesian capabilities.
 
@@ -55,21 +55,77 @@ The paper conducts a multi-step theoreical analysis on the model key elements. E
 
 1. In the supplementary material they show that ABNN exhibits greater stability than classical BNNs. This is because in variational inference BNNs the gradients, crucial for obtaining the Bayesian interpretation, vary greatly. This often introduces instability, perturbating the training. ABNN reduces this burden by applying this term on the latent space rather than the weights.
 
-2. In the literature, because of the non-convex nature of the DNN loss, there might exist a need to modify the loss. By adding a new &epsilon term, they show  show empirical benefits for performance and uncertainty quantification
+2. In the literature, because of the non-convex nature of the DNN loss, there might exist a need to modify the loss. By adding a new $\varepsilon$ term, they show  show empirical benefits for performance and uncertainty quantification
 
 3. Although using BNNs theoretically provide valuable information, they remain unused in practice because of challenges in computing full posteriors. For this reason, ABNN solely samples the sampling noise terms (ϵ) and average over multiple training terms to generate robust predictions during inference.
 
 After these modifications, the general model training procedure is as follows:
 
 <div align="center">
-    <img src="Images/Training-Procedure.png" alt="Image" width="550" height="700">
+    <img src="Images/Training-Procedure.png" alt="Image" width="400" height="600">
 </div>
 
 ### 2.1.2  Bayesian Normalization Layers (BNLs)
 
+The BNL is the core of the ABNN approach, which adapts conventional normalization layers by incorporating Gaussian noise to model uncertainty. Here’s the detailed equation for the BNL:
+
+$$
+u_j = \text{BNL}(W_j h_{j-1})
+$$
+$$
+\text{BNL}(h_j) = \frac{(h_j - \hat{\mu}_j)}{\hat{\sigma}_j} \cdot \gamma_j (1 + \epsilon_j) + \beta_j
+$$
+
+Where:
+- $u_j$: Represents the pre-activation mapping at layer $j$.
+- $h_j$: Represents the input to the normalization layer.
+- $W_j$: Weights of layer $j$.
+- $\hat{\mu}_j$ and $\hat{\sigma}_j$: Empirical mean and standard deviation computed from the input $h_j$.
+- $\gamma_j$ and $\beta_j$: Learnable parameters that scale and shift the normalized input.
+- $\epsilon_j \sim \mathcal{N}(0,1)$: Gaussian noise added to introduce randomness and model uncertainty.
+- $a(\cdot)$: Activation function applied to $u_j$ to get the activated output $a_j$.
+
 ### 2.1.3  Fine-tuning the ABNN
 
+During the fine-tuning phase, ABNN optimizes the network's parameters (more focusing on the parameters introduced in the BNL). The loss function is a combination of the standard training loss (The Maximum A Posteriori (MAP) Loss) and additional $\varepsilon$ term to manage the Bayesian aspects:
+
+The MAP loss, $L_{MAP}(\omega)$, is given by the formula:
+
+$$
+L_{MAP}(\omega) = -\sum_{(x_i,y_i) \in D} \log P(y_i | x_i,\omega) - \log P(\omega)
+$$
+
+- The first term is the log likelihood of the data given the parameters, which is typical for maximum likelihood estimation.
+- The second term, $-\log P(\omega)$, is the logarithm of the prior probability of the parameters, incorporating prior beliefs about the parameter values into the training process.
+
+The calclation of the extra $\varepsilon$ term is done as below:
+
+$$
+ε(\omega) = -\sum_{(x_i,y_i) \in D} \eta_i \log P(y_i | x_i,\omega)
+$$
+
+Where:
+- $D$: Training dataset consisting of input-output pairs $(x_i, y_i)$.
+- $\eta_i$: Class-dependent random weight initialized at the beginning of training.
+- $P(y_i | x_i, \omega)$: The probability of target $y_i$ given the input $x_i$ and model parameters $\omega$.
+
+And then, the loss will be calculated:
+
+$$
+L(\omega) = L_{MAP}(\omega) + \varepsilon(\omega)
+$$
+
 ### 2.1.4  Inference with ABNN
+
+During inference, ABNN uses the stochastic nature of BNLs to generate a predictive distribution over outputs for given inputs. They achieved this by sampling from the Gaussian noise components $\epsilon_j$ during each forward pass, thus generating different outputs for the same input:
+
+$$
+P(y | x, D) \approx \frac{1}{M} \sum_{m=1}^M P(y | x, \omega_m)
+$$
+
+Where:
+- $M$: Number of Monte Carlo samples or network forward passes with different noise realizations.
+- $\omega_m$: Model parameters during the $m$-th forward pass with a specific realization of $\epsilon_j$.
 
 ## 2.2. Our interpretation 
 
