@@ -73,6 +73,10 @@ u_j = \text{BNL}(W_j h_{j-1})
 $$
 
 $$
+a_j = a(u_j)
+$$
+
+$$
 \text{BNL}(h_j) = \frac{(h_j - \hat{\mu}_j)}{\hat{\sigma}_j} \cdot \gamma_j (1 + \epsilon_j) + \beta_j
 $$
 
@@ -83,7 +87,7 @@ Where:
 - $\hat{\mu}_j$ and $\hat{\sigma}_j$: Empirical mean and standard deviation computed from the input $h_j$.
 - $\gamma_j$ and $\beta_j$: Learnable parameters that scale and shift the normalized input.
 - $\epsilon_j \sim \mathcal{N}(0,1)$: Gaussian noise added to introduce randomness and model uncertainty.
-- $a(\cdot)$: Activation function applied to $u_j$ to get the activated output $a_j$.
+- $a(\cdot)$: Activation function applied to $u_j$ to get the activation output $a_j$.
 
 ### 2.1.3  Fine-tuning the ABNN
 
