@@ -165,7 +165,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 </div>
   
 <div align="center">
-    <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/9b6682c7-7b69-4e86-8792-fdc556f8f516" alt="SVHN" width="600" height="200">
+    <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/9b6682c7-7b69-4e86-8792-fdc556f8f516" alt="SVHN" width="550" height="200">
     <p id="SVHN">Figure 5: Sample images from the SVHN dataset in full numbers format </p>     
 </div>
 
@@ -211,7 +211,7 @@ classes: 19 classes mirroring those found in the CityScapes dataset and two OOD 
    - **Results**: ABNN showed impressive results, achieving a mean IoU of 61.96% and significantly lowering the FPR95 to 21.68%.
 
 <div align="center">
-    <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/cd3977a1-5688-40a1-94cc-b6bb2112e38d" alt="MUAD" width="1200" height="200">
+    <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/cd3977a1-5688-40a1-94cc-b6bb2112e38d" alt="MUAD" width="1200" height="185">
     <p id="MUAD">Figure 9: Sample images from the MUAD dataset</p>     
 </div>
 
