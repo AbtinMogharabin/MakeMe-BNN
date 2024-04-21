@@ -142,10 +142,11 @@ Where:
 
 ## 3.1. Experimental setup
 
-### Dataset
+### 3.1.1 Dataset
 
-The authors used the following datasets for their experiments on uncertainty quantification using Bayesian Neural Networks:
+The paper demonstrates the efficiency of the ABNN approach to a number of different datasets and backbones in *image classification* and *semantic segmentation* tasks.
 
+#### 3.1.1.1  Image Classification
 1. **CIFAR-10 and CIFAR-100**:
    - **Description**: CIFAR-10 and CIFAR-100 are popular image classification datasets containing 60,000 images divided into 10 and 100 classes respectively.
    - **Usage**: They are utilized for image classification tasks with models such as ResNet-50 and WideResNet28-10.
@@ -175,13 +176,17 @@ The authors used the following datasets for their experiments on uncertainty qua
    - **Usage**: Used as an out-of-distribution dataset in experiments with models trained on ImageNet.
    - **Dimension**: Typically processed to fit the input size (224x224 pixels) requirements of the ImageNet model.
    - **Data Split**: Consists of 5,640 images categorized into 47 categories.   
-   - **Results**: Employed as an OOD dataset for ImageNet trained models. Performance details specific to DTD were not detailed in the paper.
+   - **Results**: Employed as an OOD dataset for ImageNet-trained models. Performance details specific to DTD were not detailed in the paper.
    - **Reference**: [Cimpoi, M., Maji, S., Kokkinos, I., Mohamed, S., & Vedaldi, A. Describing textures in the wild. In Proceedings of the CVPR. 2014](https://www.robots.ox.ac.uk/~vgg/data/dtd/) 
-  
+
+The paper also provides details on the fast computation of the models compared to other uncertainty-based model. The training time for CIFAR-10 and CIFAR-100 datasets on ResNet-50 and WideResNet-28x10 backbones was 12 hours in total on a single RTX 3090.
+
+#### 3.1.1.1  Semantic Segmentation
+
 5. **StreetHazards**:
    - **Description**: Part of the larger BDD100K dataset, designed specifically for benchmarking anomaly detection in the context of street scenes.
-   - **Usage**: Used for assessing model performance in semantic segmentation tasks and uncertainty estimation.
-   - **Dimension**: Typically used dimensions might range around 512x256 pixels becouse it includes complex street scenes.
+   - **Usage**: Used to assess model performance in semantic segmentation tasks and uncertainty estimation.
+   - **Dimension**: Typically used dimensions might range around 512x256 pixels because it includes complex street scenes.
    - **Data Split**: Comprises 5,125 training images and 1,500 testing images, including additional out-of-distribution objects.   
    - **Results**: In semantic segmentation tasks, ABNN achieved a mean IoU of 53.82% and was able to improve OOD detection, reducing FPR95 to 32.02%.
    - **Reference**: [Hendrycks, Dan, et al. "A benchmark for anomaly segmentation." arXiv preprint arXiv:1911.11132, 2019](https://github.com/hendrycks/anomaly-seg) 
@@ -189,15 +194,15 @@ The authors used the following datasets for their experiments on uncertainty qua
 6. **BDD-Anomaly**:
    - **Description**: A challenging real-world dataset for street scene segmentation that includes diverse conditions such as weather and nighttime scenes.
    - **Usage**: A subset of the BDD100K used for evaluating semantic segmentation and anomaly detection models.
-   - **Dimension**: Typically used dimensions might range around 1280x720 pixels becouse it includes diverse street scenes captured at various times.
+   - **Dimension**: Typically used dimensions might range around 1280x720 pixels because it includes diverse street scenes captured at various times.
    - **Data Split**: Features 6,688 images for training and 361 for testing.   
    - **Results**: For semantic segmentation, ABNN obtained a mean IoU of 48.76% on this dataset.
-   - **Reference**: Yu, Fisher, et al. "Bdd100k: A diverse driving dataset for heterogeneous multitask learning." In CVPR, 2020 .
+   - **Reference**: Yu, Fisher, et al. "Bdd100k: A diverse driving dataset for heterogeneous multitask learning." In CVPR, 2020.
 
 7. **MUAD**:
    - **Description**: Specifically designed for evaluating autonomous driving systems, focusing on both normal and anomalous objects encountered in urban environments.
    - **Usage**: Employed for semantic segmentation tasks focusing on both normal and out-of-distribution scenarios.
-   - **Dimension**: Typically used dimensions might range around 2048x1024 pixels becouse it includes diverse urban scenes.
+   - **Dimension**: Typically used dimensions might range around 2048x1024 pixels because it includes diverse urban scenes.
    - **Data Split**: Contains 3,420 training images, 492 validation images, and 6,501 test images, which include normal and OOD samples.   
    - **Results**: ABNN showed impressive results, achieving a mean IoU of 61.96% and significantly lowering the FPR95 to 21.68%.
    - **Reference**: [Franchi, Gianni, et al. "Muad: Multiple uncertainties for autonomous driving, a benchmark for multiple uncertainty types and tasks." In BMVC, 2022](https://muad-dataset.github.io/) 
@@ -212,9 +217,7 @@ The authors used the following datasets for their experiments on uncertainty qua
 
 
 
-The paper demonstrates the efficiency of the ABNN approach to a number of different datasets and backbones in *image classification* and *semantic segmentation* tasks.
 
-### 3.1.1  Image Classification
 
 1. CIFAR-10: This dataset contains 60,000 images divided into 10 classes, with 6,000 images per class. The images are colored, with a resolution of 32x32 pixels. The dataset is balanced, with an equal number of images in each class. The 10 classes in CIFAR-10 are airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck. This dataset is widely used for evaluating image classification algorithms and there are 50,000 training images and 10,000 test images. In the paper, this dataset was used to evaluate backbones like ResNet-50 and WideResNet-28x10 for image classification tasks​​. They did the training from scratch but pre-trained models would have similar results.
 
@@ -224,25 +227,13 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 - Also, for out-of-distribution (OOD) detection, the SVHN (Street View House Numbers) dataset was used. It consists of images of house numbers extracted from Google Street View, providing a real-world setting with various backgrounds and lighting conditions. The dataset contains over 600,000 digit images, with a primary focus on street view house numbers. Each image is a 32x32 pixel color image, with digits ranging from 0 to 9.
 
-The paper also provides details on the fast computation of the models compared to other uncertainty-based model. The training time for CIFAR-10 and CIFAR-100 datasets on ResNet-50 and WideResNet-28x10 backbones was 12 hours in total on a single RTX 3090.
+
 
 ### 3.1.2  Semantic Segmentation
 
 1. StreetHazards: This dataset comprises synthetic street scenes with pixel-wise annotations for 13 classes. The dataset is designed for semantic segmentation tasks. The classes represent various street elements, such as road, sidewalk, building, traffic light, traffic sign, and sky. In total, there are 5,125 training images and 1,500 test images. The test set also contains an additional 250 out-of-distribution classes. The paper employed DeepLabv3+ with a ResNet-50 encoder as a backbone, as introduced by Chen et al. [4].
 2. BDD-Anomaly: BDD-Anomaly is a subset of the BDD100K dataset, focusing on street scenes with 17 distinct classes in the training set. The classes represent common elements in street scenes, including road, sidewalk, building, traffic light, traffic sign, vegetation, and more. The training set contains 6,688 images, while the test set has 361 images. The test set also introduces two additional out-of-distribution (OOD) classes, namely motorcycle and train.The paper employed ResNet-50 encoder as a backbone​​.
 3. MUAD:  This dataset consists of various images for semantic segmentation, containing 21 classes and additional out-of-distribution (OOD) classes representing object anomalies and animals. The dataset includes classes mirroring those in the CityScapes dataset, such as road, sidewalk, building, and more. It also has additional classes for object anomalies and animals, adding to the dataset's diversity. The training set has 3,420 images, the validation set has 492 images, and the test set contains 6,501 images. The test set is diverse, with subsets like "normal," "normal with no shadow," and "out-of-distribution" representing different conditions. In the study, a DeepLabV3+ with a ResNet50 encoder was employed.
-
-
-1- CIFAR-10 and CIFAR-100 for ResNet-50 and WideResNet28-10.  https://www.cs.toronto.edu/~kriz/cifar.html
-
-2- ImageNet whichthey reported the results for ABNN on it with ResNet-50 and ViT. https://www.image-net.org/download.php
-
-They used the datesets and transform the initial problem into binary classification between in-distribution
-and out-of-distribution data using the maximum softmax probability as the criterion.
-
-3- SVHN dataset as the out-of-distribution dataset for OOD detection tasks on CIFAR-10 and CIFAR-100. http://ufldl.stanford.edu/housenumbers/
-
-4- Describable Texture as the out-of-distribution dataset on ImageNet. https://www.robots.ox.ac.uk/~vgg/data/dtd/
 
 
 ## 3.2. Running the code
