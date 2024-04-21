@@ -26,7 +26,7 @@ This readme file is an outcome of the [CENG502 (Spring 2024)](https://ceng.metu.
 - Figure 1: [Brief Evaluation of ABNN](#figure-1-brief-evaluation-of-abnn)
 - Figure 2: [Approach Illustration](#figure-2-approach-illustration)
 - Figure 3: [General Model Training Procedure](#figure-3-general-model-training-procedure)
-- Figure 4: [CIFAR-10 Dataset](#figure-4-cifar-10-dataset)
+- Figure 4: [CIFAR-10 Dataset](#CIFAR-10)
 - Figure 5: [ImageNet Dataset](#figure-5-imagenet-dataset)
 - Figure 6: [SVHN Dataset](#figure-6-svhn-dataset)
 - Figure 7: [DTD Dataset](#figure-7-dtd-dataset)
@@ -70,11 +70,11 @@ The key contributions of this paper are as follows:
 - Based on my review, this paper demonstrates one of the very few efforts to translate a deterministic model into a Bayesian version after the training of the deterministic model is finished. To name the two most relevant approaches:
   1. **Deterministic Variational Inference Approach:**
      - One paper employs deterministic variational inference techniques to integrate Bayesian methods into trained deterministic neural networks. It introduces closed-form variance priors for the network weights, allowing the deterministic model to handle uncertainty estimations through a robust Bayesian framework after its initial training [2].
-     - Compared to this approach that requires extensive modifications to the network’s inference process to accommodate the new Bayesian priors, the "Make Me a BNN" paper introduces a method that is notably simpler and potentially faster, as it leverages existing normalization layers within pre-trained DNNs to implement Bayesian functionality.
+     - Compared to this approach, which requires extensive modifications to the network’s inference process to accommodate the new Bayesian priors, the "Make Me a BNN" paper introduces a method that is notably simpler and potentially faster, as it leverages existing normalization layers within pre-trained DNNs to implement Bayesian functionality.
 
   2. **Decoupled Bayesian Stage Approach:**
      - Another study involves a decoupled Bayesian stage applied to a pre-trained deterministic neural network. This method uses a Bayesian Neural Network to recalibrate the outputs of the deterministic model, thereby improving its predictive uncertainty without retraining the entire network from scratch [3].
-     - Unlike the "Make Me a BNN" paper's straightforward and simple approach, this method, while effective for improving calibration, involves adding an entirely new Bayesian processing layer, which might not be as efficient or straightforward in terms of retrofitting existing models with Bayesian capabilities.
+     - Unlike the "Make Me a BNN" paper's straightforward approach, this method. At the same time, effective improving calibration involves adding an entirely new Bayesian processing layer, which might not be as efficient or straightforward in terms of retrofitting existing models with Bayesian capabilities.
 
 
 # 2. The method and my interpretation
@@ -83,19 +83,19 @@ The key contributions of this paper are as follows:
 
 ### 2.1.1  Model General Overview
 
-The paper conducts a multi-step theoreical analysis on the model key elements. Explaining their reasoninng behind each of the chosen methods.
+The paper conducts a multi-step theoretical analysis of the model's key elements. They explained their reasoning behind each of the chosen methods.
 
-1. In the supplementary material they show that ABNN exhibits greater stability than classical BNNs. This is because in variational inference BNNs the gradients, crucial for obtaining the Bayesian interpretation, vary greatly. This often introduces instability, perturbating the training. ABNN reduces this burden by applying this term on the latent space rather than the weights.
+1. In the supplementary material, they show that ABNN exhibits more excellent stability than classical BNNs. This is because, in variational inference BNNs, the gradients crucial for obtaining the Bayesian interpretation vary greatly. This often introduces instability, perturbating the training. ABNN reduces this burden by applying this term to the latent space rather than the weights.
 
-2. In the literature, because of the non-convex nature of the DNN loss, there might exist a need to modify the loss. By adding a new $\varepsilon$ term, they show  show empirical benefits for performance and uncertainty quantification
+2. In the literature, because of the non-convex nature of the DNN loss, there might exist a need to modify the loss. By adding a new $\varepsilon$ term, they show  empirical benefits for performance and uncertainty quantification
 
-3. Although using BNNs theoretically provide valuable information, they remain unused in practice because of challenges in computing full posteriors. For this reason, ABNN solely samples the sampling noise terms (ϵ) and average over multiple training terms to generate robust predictions during inference.
+3. Although using BNNs theoretically provides valuable information, they remain unused in practice because of challenges in computing full posteriors. For this reason, ABNN solely samples the sampling noise terms (ϵ) and averages over multiple training terms to generate robust predictions during inference.
 
 After these modifications, the general model training procedure is as follows:
 
 <div align="center">
     <img src="Images/Training-Procedure.png" alt="Procedure" width="400" height="580">
-    <p>Figure 3: This image represents general model training procedure</p>  
+    <p>Figure 3: This image represents the general model training procedure</p>  
 </div>
 
 ### 2.1.2  Bayesian Normalization Layers (BNLs)
@@ -133,10 +133,10 @@ $$
 L_{MAP}(\omega) = -\sum_{(x_i,y_i) \in D} \log P(y_i | x_i,\omega) - \log P(\omega)
 $$
 
-- The first term is the log likelihood of the data given the parameters, which is typical for maximum likelihood estimation.
+- The first term is the log-likelihood of the data given the parameters, which is typical for maximum likelihood estimation.
 - The second term, $-\log P(\omega)$, is the logarithm of the prior probability of the parameters, incorporating prior beliefs about the parameter values into the training process.
 
-The calclation of the extra $\varepsilon$ term is done as below:
+The calculation of the extra $\varepsilon$ term is done as below:
 
 $$
 ε(\omega) = -\sum_{(x_i,y_i) \in D} \eta_i \log P(y_i | x_i,\omega)
@@ -147,7 +147,7 @@ Where:
 - $\eta_i$: Class-dependent random weight initialized at the beginning of training.
 - $P(y_i | x_i, \omega)$: The probability of target $y_i$ given the input $x_i$ and model parameters $\omega$.
 
-And then, the loss will be calculated:
+Then, the loss will be calculated:
 
 $$
 L(\omega) = L_{MAP}(\omega) + \varepsilon(\omega)
@@ -191,7 +191,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 <div align="center">
     <img src="Images/CIFAR-10.png" alt="CIFAR-10" width="350" height="300">
-    <p>Figure 4: This image represents the CIFAR-10 dataset which is commonly used for image classification tasks.</p>  
+    <p id="CIFAR-10">Figure 4: This image represents the CIFAR-10 dataset which is commonly used for image classification tasks.</p>  
 </div>
 
 2. **ImageNet**:
