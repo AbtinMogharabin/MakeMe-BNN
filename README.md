@@ -44,7 +44,7 @@ The key contributions of this paper are as follows:
 
   2. **Decoupled Bayesian Stage Approach:**
      - Another study involves a decoupled Bayesian stage applied to a pre-trained deterministic neural network. This method uses a Bayesian Neural Network to recalibrate the outputs of the deterministic model, thereby improving its predictive uncertainty without retraining the entire network from scratch [3].
-     - Unlike the "Make Me a BNN" paper's straightforward approach, this method. At the same time, effective calibration improvement involves adding an entirely new Bayesian processing layer, which might need to be more efficient and straightforward in terms of retrofitting existing models with Bayesian capabilities.
+     - "Make Me a BNN" paper introduces a quick deployment and straightforward integration into existing models by attaching simple adaptable Bayesian modules directly to the normalization layers. But effective calibration improvement involves adding an entirely new Bayesian processing layer, which might need to be more efficient in terms of adding Bayesian uncertainty into existing models.
 
 
 # 2. The method and my interpretation
