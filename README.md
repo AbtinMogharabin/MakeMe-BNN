@@ -195,7 +195,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
    - **Results**: In semantic segmentation tasks, ABNN achieved a mean IoU of 53.82% and was able to improve OOD detection, reducing FPR95 to 32.02%.
 
 <div align="center">
-    <img src="Images/StreetHazards.png" alt="StreetHazards" width="600" height="400">
+    <img src="Images/StreetHazards.png" alt="StreetHazards" width="500" height="390">
     <p id="StreetHazards">Figure 8: Sample images from the StreetHazards dataset</p>     
 </div>
 
