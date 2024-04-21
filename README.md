@@ -219,21 +219,43 @@ The paper also provides details on the fast computation of the models compared t
 
 
 
-1. CIFAR-10: This dataset contains 60,000 images divided into 10 classes, with 6,000 images per class. The images are colored, with a resolution of 32x32 pixels. The dataset is balanced, with an equal number of images in each class. The 10 classes in CIFAR-10 are airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck. This dataset is widely used for evaluating image classification algorithms and there are 50,000 training images and 10,000 test images. In the paper, this dataset was used to evaluate backbones like ResNet-50 and WideResNet-28x10 for image classification tasks​​. They did the training from scratch but pre-trained models would have similar results.
+1. [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html): This dataset contains 60,000 images divided into 10 classes, with 6,000 images per class. The images are colored, with a resolution of 32x32 pixels. The dataset is balanced, with an equal number of images in each class. The 10 classes in CIFAR-10 are airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck. This dataset is widely used for evaluating image classification algorithms and there are 50,000 training images and 10,000 test images. In the paper, this dataset was used to evaluate backbones like ResNet-50 and WideResNet-28x10 for image classification tasks​​. They did the training from scratch but pre-trained models would have similar results.
 
-2. CIFAR-100: This dataset contains 60,000 images across 100 classes, with 600 images per class. Like CIFAR-10, these are 32x32 pixel color images. It is more challenging due to its fine-grained classification. The 100 classes are grouped into 20 superclasses, with each superclass containing five related classes. The dataset encompasses a wide range of objects and animals, providing a diverse set of categories. There are 50,000 training images and 10,000 test images, distributed equally across the 100 classes. In the paper, ResNet-50 and WideResNet-28x10 were used as backbones for experiments on CIFAR-100​​. They did the training from scratch but pre-trained models would have similar results.
+<div align="center">
+    <img src="Images/CIFAR-10.png" alt="Image" width="350" height="300">
+</div>
 
-3. ImageNet: ImageNet is a large-scale dataset with over a million high-resolution images. It has 1,000 classes, each with varying numbers of images, but generally several hundred to a few thousand images per class. The classes represent a broad range of objects, animals, plants, and scenes, such as dogs, cats, cars, airplanes, and other everyday items and the training set contains approximately 1.2 million images, while the test set has about 50,000 images. In the paper, ResNet-50 and Vision Transformer (ViT) were used for experiments on ImageNet for image classification tasks​​. For the backbones, they used torchvision pre-trained models.
+2. [CIFAR-100](https://www.cs.toronto.edu/~kriz/cifar.html): This dataset contains 60,000 images across 100 classes, with 600 images per class. Like CIFAR-10, these are 32x32 pixel color images. It is more challenging due to its fine-grained classification. The 100 classes are grouped into 20 superclasses, with each superclass containing five related classes. The dataset encompasses a wide range of objects and animals, providing a diverse set of categories. There are 50,000 training images and 10,000 test images, distributed equally across the 100 classes. In the paper, ResNet-50 and WideResNet-28x10 were used as backbones for experiments on CIFAR-100​​. They did the training from scratch but pre-trained models would have similar results.
 
-- Also, for out-of-distribution (OOD) detection, the SVHN (Street View House Numbers) dataset was used. It consists of images of house numbers extracted from Google Street View, providing a real-world setting with various backgrounds and lighting conditions. The dataset contains over 600,000 digit images, with a primary focus on street view house numbers. Each image is a 32x32 pixel color image, with digits ranging from 0 to 9.
+3. [ImageNet](https://www.image-net.org/download.php): ImageNet is a large-scale dataset with over a million high-resolution images. It has 1,000 classes, each with varying numbers of images, but generally several hundred to a few thousand images per class. The classes represent a broad range of objects, animals, plants, and scenes, such as dogs, cats, cars, airplanes, and other everyday items and the training set contains approximately 1.2 million images, while the test set has about 50,000 images. In the paper, ResNet-50 and Vision Transformer (ViT) were used for experiments on ImageNet for image classification tasks​​. For the backbones, they used torchvision pre-trained models.
 
+<div align="center">
+    <img src="Images/ImageNet.png" alt="Image" width="600" height="200">
+</div>
 
+- Also, for out-of-distribution (OOD) detection, the [SVHN (Street View House Numbers) dataset](http://ufldl.stanford.edu/housenumbers/) was used. It consists of images of house numbers extracted from Google Street View, providing a real-world setting with various backgrounds and lighting conditions. The dataset contains over 600,000 digit images, with a primary focus on street view house numbers. Each image is a 32x32 pixel color image, with digits ranging from 0 to 9.
+
+<div align="center">
+    <img src="Images/SVHN.png" alt="Image" width="800" height="200">
+</div>
+
+The paper also provides details on the fast computation of the models compared to other uncertainty-based model. The training time for CIFAR-10 and CIFAR-100 datasets on ResNet-50 and WideResNet-28x10 backbones was 12 hours in total on a single RTX 3090.
 
 ### 3.1.2  Semantic Segmentation
 
-1. StreetHazards: This dataset comprises synthetic street scenes with pixel-wise annotations for 13 classes. The dataset is designed for semantic segmentation tasks. The classes represent various street elements, such as road, sidewalk, building, traffic light, traffic sign, and sky. In total, there are 5,125 training images and 1,500 test images. The test set also contains an additional 250 out-of-distribution classes. The paper employed DeepLabv3+ with a ResNet-50 encoder as a backbone, as introduced by Chen et al. [4].
-2. BDD-Anomaly: BDD-Anomaly is a subset of the BDD100K dataset, focusing on street scenes with 17 distinct classes in the training set. The classes represent common elements in street scenes, including road, sidewalk, building, traffic light, traffic sign, vegetation, and more. The training set contains 6,688 images, while the test set has 361 images. The test set also introduces two additional out-of-distribution (OOD) classes, namely motorcycle and train.The paper employed ResNet-50 encoder as a backbone​​.
-3. MUAD:  This dataset consists of various images for semantic segmentation, containing 21 classes and additional out-of-distribution (OOD) classes representing object anomalies and animals. The dataset includes classes mirroring those in the CityScapes dataset, such as road, sidewalk, building, and more. It also has additional classes for object anomalies and animals, adding to the dataset's diversity. The training set has 3,420 images, the validation set has 492 images, and the test set contains 6,501 images. The test set is diverse, with subsets like "normal," "normal with no shadow," and "out-of-distribution" representing different conditions. In the study, a DeepLabV3+ with a ResNet50 encoder was employed.
+1. [StreetHazards](https://github.com/Jun-CEN/Open-World-Semantic-Segmentation?tab=readme-ov-file): This dataset comprises synthetic street scenes with pixel-wise annotations for 13 classes. The dataset is designed for semantic segmentation tasks. The classes represent various street elements, such as road, sidewalk, building, traffic light, traffic sign, and sky. In total, there are 5,125 training images and 1,500 test images. The test set also contains an additional 250 out-of-distribution classes. The paper employed DeepLabv3+ with a ResNet-50 encoder as a backbone, as introduced by Chen et al. [4].
+
+<div align="center">
+    <img src="Images/StreetHazards.png" alt="Image" width="400" height="300">
+</div>
+
+2. [BDD-Anomaly](https://github.com/daniel-bogdoll/anomaly_datasets/blob/main/datasets/bdd-anomaly.py): BDD-Anomaly is a subset of the BDD100K dataset, focusing on street scenes with 17 distinct classes in the training set. The classes represent common elements in street scenes, including road, sidewalk, building, traffic light, traffic sign, vegetation, and more. The training set contains 6,688 images, while the test set has 361 images. The test set also introduces two additional out-of-distribution (OOD) classes, namely motorcycle and train.The paper employed ResNet-50 encoder as a backbone​​.
+
+3. [MUAD](https://muad-dataset.github.io/):  This dataset consists of various images for semantic segmentation, containing 21 classes and additional out-of-distribution (OOD) classes representing object anomalies and animals. The dataset includes classes mirroring those in the CityScapes dataset, such as road, sidewalk, building, and more. It also has additional classes for object anomalies and animals, adding to the dataset's diversity. The training set has 3,420 images, the validation set has 492 images, and the test set contains 6,501 images. The test set is diverse, with subsets like "normal," "normal with no shadow," and "out-of-distribution" representing different conditions. In the study, a DeepLabV3+ with a ResNet50 encoder was employed.
+
+<div align="center">
+    <img src="Images/MUAD.png" alt="Image" width="200" height="600">
+</div>
 
 
 ## 3.2. Running the code
