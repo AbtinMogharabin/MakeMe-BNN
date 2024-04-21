@@ -64,7 +64,7 @@ The paper conducts a multi-step theoretical analysis of the model's key elements
 After these modifications, the general model training procedure is as follows:
 
 <div align="center">
-    <img src="Images/Training-Procedure.png" alt="Procedure" width="400" height="580">
+    <img src="Images/Training-Procedure.png" alt="Procedure" width="430" height="580">
     <p id= "Procedure">Figure 3: ABNN's general training procedure</p>  
 </div>
 
