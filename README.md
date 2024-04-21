@@ -2,6 +2,38 @@
 
 This readme file is an outcome of the [CENG502 (Spring 2024)](https://ceng.metu.edu.tr/~skalkan/ADL/) project for reproducing a paper without an implementation. See [CENG502 (Spring 2024) Project List](https://github.com/CENG502-Projects/CENG502-Spring2024) for a complete list of all paper reproduction projects. The public repository and commit history are available [here](https://github.com/AbtinMogharabin/MakeMe-BNN).
 
+# Table of Contents
+1. [Introduction](#1-introduction)
+   - [Paper summary](#11-paper-summary)
+2. [The method and my interpretation](#2-the-method-and-my-interpretation)
+   - [The original method](#21-the-original-method)
+     - [Model General Overview](#211-model-general-overview)
+     - [Bayesian Normalization Layers (BNLs)](#212-bayesian-normalization-layers-bnls)
+     - [Fine-tuning the ABNN](#213-fine-tuning-the-abnn)
+     - [Inference with ABNN](#214-inference-with-abnn)
+   - [Our interpretation](#22-our-interpretation)
+3. [Experiments and results](#3-experiments-and-results)
+   - [Experimental setup](#31-experimental-setup)
+     - [Image Classification](#311-image-classification)
+     - [Semantic Segmentation](#3111-semantic-segmentation)
+   - [Running the code](#32-running-the-code)
+   - [Results](#33-results)
+4. [Conclusion](#4-conclusion)
+5. [References](#5-references)
+
+# Table of Figures
+- Figure 1: [Brief Evaluation of ABNN](#figure-1-brief-evaluation-of-abnn)
+- Figure 2: [Approach Illustration](#figure-2-approach-illustration)
+- Figure 3: [General Model Training Procedure](#figure-3-general-model-training-procedure)
+- Figure 4: [CIFAR-10 Dataset](#figure-4-cifar-10-dataset)
+- Figure 5: [ImageNet Dataset](#figure-5-imagenet-dataset)
+- Figure 6: [SVHN Dataset](#figure-6-svhn-dataset)
+- Figure 7: [DTD Dataset](#figure-7-dtd-dataset)
+- Figure 8: [StreetHazards Dataset](#figure-8-streethazards-dataset)
+- Figure 9: [MUAD Dataset](#figure-9-muad-dataset)
+- Figure 10: [CityScapes Dataset](#figure-10-cityscapes-dataset)
+
+
 # 1. Introduction
 
 The challenge of effectively quantifying uncertainty in predictions made by deep learning models, particularly Deep Neural Networks (DNNs), is crucial for their safe deployment in risk-sensitive environments. DNNs are typically deterministic, providing point estimates without any measure of confidence. This can lead to overconfident decisions in many real-world applications, particularly in safety-critical domains such as autonomous driving, medical diagnoses, industrial visual inspection, etc. 
@@ -13,7 +45,7 @@ Given these challenges, the deployment of traditional BNNs in real-world applica
 ABNN preserves the main predictive properties of DNNs while enhancing their uncertainty quantification abilities. The paper conducts extensive experiments across multiple datasets for image classification and semantic segmentation tasks. It demonstrates that ABNN achieves state-of-the-art performance without the computational budget typically associated with ensemble methods. The following figure shows a brief comparison of ABNN and a number of other uncertainty-based deep learning approaches in literature:
 
 <div align="center">
-    <img src="Images/Brief-Evaluation.png" alt="Image" width="800" height="320">
+    <img src="Images/Brief-Evaluation.png" alt="Brief" width="800" height="320">
 </div>
 
 In this repository, we make an effort to reproduce the methods and results of the paper based on the descriptions provided.
@@ -23,7 +55,7 @@ In this repository, we make an effort to reproduce the methods and results of th
 The ABNN approach starts with a pre-trained DNN. It transforms it into a Bayesian Neural Network (BNN) by introducing Bayesian Normalization Layers (BNLs) to the existing normalization layers (like batch or layer normalization). This transformation involves adding Gaussian noise to the normalization process, thereby incorporating uncertmodelsnto the model's predictions without extensive retraining. The process is designed to be computationally efficient, requiring only minimal additional training (fine-tuning) to adjust the new layers, making it feasible to implement on existing models without significant computational overhead.
 
 <div align="center">
-    <img src="Images/Approach-Illustration.png" alt="Image" width="800" height="300">
+    <img src="Images/Approach-Illustration.png" alt="Approach" width="800" height="300">
 </div>
 
 The key contributions of this paper are as follows:
@@ -61,7 +93,8 @@ The paper conducts a multi-step theoreical analysis on the model key elements. E
 After these modifications, the general model training procedure is as follows:
 
 <div align="center">
-    <img src="Images/Training-Procedure.png" alt="Image" width="400" height="580">
+    <img src="Images/Training-Procedure.png" alt="Procedure" width="400" height="580">
+    <p>Figure 3: This image represents general model training procedure</p>  
 </div>
 
 ### 2.1.2  Bayesian Normalization Layers (BNLs)
@@ -153,7 +186,12 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
    - **Dimension**: Each image is 32x32 pixels.
    - **Data Split**: Training and test splits are standard; CIFAR-10 and CIFAR-100 typically consist of 50,000 training images and 10,000 testing images.   
    - **Results**: The ABNN model achieved competitive performance on CIFAR-10 and CIFAR-100 when using ResNet-50 and WideResNet28-10 architectures. Specifically, for CIFAR-10 with ResNet-50, the accuracy was 95.4%, and for CIFAR-100, the accuracy was 78.9%.
-   - **Reference**: [Krizhevsky, Alex. Learning multiple layers of features from tiny images. Technical report, MIT, 2009](https://www.cs.toronto.edu/~kriz/cifar.html) 
+   - **Repository**: [Krizhevsky, Alex. Learning multiple layers of features from tiny images. Technical report, MIT, 2009](https://www.cs.toronto.edu/~kriz/cifar.html) 
+
+<div align="center">
+    <img src="Images/CIFAR-10.png" alt="CIFAR-10" width="350" height="300">
+    <p>Figure 4: This image represents the CIFAR-10 dataset which is commonly used for image classification tasks.</p>  
+</div>
 
 2. **ImageNet**:
    - **Description**: A large dataset designed for use in visual object recognition software research, more than 14 million images have been hand-annotated to indicate what objects are pictured and in at least one million of the images, bounding boxes are also provided.
@@ -163,13 +201,23 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
    - **Results**: ABNN demonstrated an accuracy of 79.5% with ResNet-50 and 80.6% with ViT.
    - **Reference**: [Deng, Jia, et al. "Imagenet: A large-scale hierarchical image database." In CVPR, 2009](https://www.image-net.org/download.php)
 
-3. **SVHN (Street View House Numbers)**:
+<div align="center">
+    <img src="Images/ImageNet.png" alt="ImageNet" width="600" height="200">
+    <p>Figure 5: This image represents the ImageNet dataset </p>     
+</div>
+
+3. **Street View House Numbers (SVHN)**:
    - **Description**: A real-world image dataset obtained from house numbers in Google Street View images.
    - **Usage**: Used as an out-of-distribution dataset for models trained on CIFAR-10/100 to test their generalization and uncertainty estimation.
    - **Dimension**: Images in SVHN, like CIFAR, are small, often 32x32 pixels.
    - **Data Split**: Contains over 600,000 images used typically for testing generalization beyond the training data of different datasets.
    - **Results**: Used as an out-of-distribution dataset to test the generalization of models trained on CIFAR-10/100. Specific performance metrics in this context were not detailed for SVHN in the paper.
-   - **Reference**: [Netzer, Yuval, et al. "Reading digits in natural images with unsupervised feature learning." In NeurIPSW, 2011](http://ufldl.stanford.edu/housenumbers/)
+   - **Repository**: [Netzer, Yuval, et al. "Reading digits in natural images with unsupervised feature learning." In NeurIPSW, 2011](http://ufldl.stanford.edu/housenumbers/)
+  
+<div align="center">
+    <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/9b6682c7-7b69-4e86-8792-fdc556f8f516" alt="SVHN" width="600" height="200">
+    <p>Figure 6: This image represents the SVHN dataset in full numbers format </p>     
+</div>
 
 4. **Describable Textures Dataset (DTD)**:
    - **Description**: A dataset of textural images organized according to a list of 47 terms (categories) inspired by human perception.
@@ -177,9 +225,14 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
    - **Dimension**: Typically processed to fit the input size (224x224 pixels) requirements of the ImageNet model.
    - **Data Split**: Consists of 5,640 images categorized into 47 categories.   
    - **Results**: Employed as an OOD dataset for ImageNet-trained models. Performance details specific to DTD were not detailed in the paper.
-   - **Reference**: [Cimpoi, M., Maji, S., Kokkinos, I., Mohamed, S., & Vedaldi, A. Describing textures in the wild. In Proceedings of the CVPR. 2014](https://www.robots.ox.ac.uk/~vgg/data/dtd/) 
+   - **Repository**: [Cimpoi, M., Maji, S., Kokkinos, I., Mohamed, S., & Vedaldi, A. Describing textures in the wild. In Proceedings of the CVPR. 2014](https://www.robots.ox.ac.uk/~vgg/data/dtd/) 
 
-The paper also provides details on the fast computation of the models compared to other uncertainty-based models. The training time for CIFAR-10 and CIFAR-100 datasets on ResNet-50 and WideResNet-28x10 backbones was 12 hours in total on a single RTX 3090.
+<div align="center">
+    <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/7bff9c55-5124-448a-ba62-2b90554dbd3d" alt="DTD" width="1200" height="200">
+    <p>Figure 7: This image represents the DTD dataset</p>     
+</div>
+
+*The paper also provides details on the fast computation of the models compared to other uncertainty-based models. The training time for CIFAR-10 and CIFAR-100 datasets on ResNet-50 and WideResNet-28x10 backbones was 12 hours in total on a single RTX 3090.*
 
 #### 3.1.1.1  Semantic Segmentation
 
@@ -189,7 +242,12 @@ The paper also provides details on the fast computation of the models compared t
    - **Dimension**: Typically used dimensions might range around 512x256 pixels because it includes complex street scenes.
    - **Data Split**: Comprises 5,125 training images and 1,500 testing images, including additional out-of-distribution objects.   
    - **Results**: In semantic segmentation tasks, ABNN achieved a mean IoU of 53.82% and was able to improve OOD detection, reducing FPR95 to 32.02%.
-   - **Reference**: [Hendrycks, Dan, et al. "A benchmark for anomaly segmentation." arXiv preprint arXiv:1911.11132, 2019](https://github.com/hendrycks/anomaly-seg) 
+   - **Repository**: [Hendrycks, Dan, et al. "A benchmark for anomaly segmentation." arXiv preprint arXiv:1911.11132, 2019](https://github.com/hendrycks/anomaly-seg) 
+
+<div align="center">
+    <img src="Images/StreetHazards.png" alt="StreetHazards" width="600" height="400">
+    <p>Figure 8: This image represents the StreetHazards dataset</p>     
+</div>
 
 6. **BDD-Anomaly**:
    - **Description**: A challenging real-world dataset for street scene segmentation that includes diverse conditions such as weather and nighttime scenes.
@@ -197,7 +255,7 @@ The paper also provides details on the fast computation of the models compared t
    - **Dimension**: Typically used dimensions might range around 1280x720 pixels because it includes diverse street scenes captured at various times.
    - **Data Split**: Features 6,688 images for training and 361 for testing.   
    - **Results**: For semantic segmentation, ABNN obtained a mean IoU of 48.76% on this dataset.
-   - **Reference**: Yu, Fisher, et al. "Bdd100k: A diverse driving dataset for heterogeneous multitask learning." In CVPR, 2020.
+   - **Repository**: [Yu, Fisher, et al. "Bdd100k: A diverse driving dataset for heterogeneous multitask learning." In CVPR, 2020](https://github.com/daniel-bogdoll/anomaly_datasets/blob/main/datasets/bdd-anomaly.py).
 
 7. **MUAD**:
    - **Description**: Specifically designed for evaluating autonomous driving systems, focusing on both normal and anomalous objects encountered in urban environments.
@@ -205,7 +263,13 @@ The paper also provides details on the fast computation of the models compared t
    - **Dimension**: Typically used dimensions might range around 2048x1024 pixels because it includes diverse urban scenes.
    - **Data Split**: Contains 3,420 training images, 492 validation images, and 6,501 test images, which include normal and OOD samples.   
    - **Results**: ABNN showed impressive results, achieving a mean IoU of 61.96% and significantly lowering the FPR95 to 21.68%.
-   - **Reference**: [Franchi, Gianni, et al. "Muad: Multiple uncertainties for autonomous driving, a benchmark for multiple uncertainty types and tasks." In BMVC, 2022](https://muad-dataset.github.io/) 
+   - **Repository**: [Franchi, Gianni, et al. "Muad: Multiple uncertainties for autonomous driving, a benchmark for multiple uncertainty types and tasks." In BMVC, 2022](https://muad-dataset.github.io/) 
+
+<div align="center">
+    <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/cd3977a1-5688-40a1-94cc-b6bb2112e38d" alt="MUAD" width="1200" height="200">
+    <p>Figure 9: This image represents example on the MUAD dataset</p>     
+</div>
+
 
 8. **CityScapes**:
    - **Description**: A dataset for semantic urban scene understanding that provides pixel-level annotations.
@@ -213,49 +277,32 @@ The paper also provides details on the fast computation of the models compared t
    - **Dimension**: Images are high-resolution, typically used at 2048x1024 pixels, providing detailed urban scenes for segmentation.
    - **Data Split**: Includes 3,475 images split across training, validation, and test sets.   
    - **Results**: Specific results for ABNN on CityScapes were not detailed in the paper.
-   - **Reference**: [Cordts, Marius, et al. "The cityscapes dataset for semantic urban scene understanding." In CVPR, 2016](https://www.cityscapes-dataset.com/)
-
-
-
-
-
-1. [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html): This dataset contains 60,000 images divided into 10 classes, with 6,000 images per class. The images are colored, with a resolution of 32x32 pixels. The dataset is balanced, with an equal number of images in each class. The 10 classes in CIFAR-10 are airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck. This dataset is widely used for evaluating image classification algorithms, and there are 50,000 training images and 10,000 test images. In the paper, this dataset was used to evaluate backbones like ResNet-50 and WideResNet-28x10 for image classification tasks​​. They did the training from scratch but pre-trained models would have similar results.
+   - **Repository**: [Cordts, Marius, et al. "The cityscapes dataset for semantic urban scene understanding." In CVPR, 2016](https://www.cityscapes-dataset.com/)
 
 <div align="center">
-    <img src="Images/CIFAR-10.png" alt="Image" width="350" height="300">
+    <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/d530572c-305d-4ea9-85ff-f28b12f924b9" alt="CityScapes" width="600" height="400">
+    <p>Figure 10: This image represents example on the CityScapes dataset</p>     
 </div>
+
+
+
+========================================TO BE DELETED AFTER MERGING =====================================================================
+1. [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html): This dataset contains 60,000 images divided into 10 classes, with 6,000 images per class. The images are colored, with a resolution of 32x32 pixels. The dataset is balanced, with an equal number of images in each class. The 10 classes in CIFAR-10 are airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck. This dataset is widely used for evaluating image classification algorithms, and there are 50,000 training images and 10,000 test images. In the paper, this dataset was used to evaluate backbones like ResNet-50 and WideResNet-28x10 for image classification tasks​​. They did the training from scratch but pre-trained models would have similar results.
+
+
 
 2. [CIFAR-100](https://www.cs.toronto.edu/~kriz/cifar.html): This dataset contains 60,000 images across 100 classes, with 600 images per class. Like CIFAR-10, these are 32x32 pixel color images. It is more challenging due to its fine-grained classification. The 100 classes are grouped into 20 superclasses, with each superclass containing five related classes. The dataset encompasses a wide range of objects and animals, providing a diverse set of categories. There are 50,000 training images and 10,000 test images, distributed equally across the 100 classes. In the paper, ResNet-50 and WideResNet-28x10 were used as backbones for experiments on CIFAR-100​​. They did the training from scratch but pre-trained models would have similar results.
 
 3. [ImageNet](https://www.image-net.org/download.php): ImageNet is a large-scale dataset with over a million high-resolution images. It has 1,000 classes, each with varying numbers of images, but generally several hundred to a few thousand images per class. The classes represent a broad range of objects, animals, plants, and scenes, such as dogs, cats, cars, airplanes, and other everyday items and the training set contains approximately 1.2 million images, while the test set has about 50,000 images. In the paper, ResNet-50 and Vision Transformer (ViT) were used for experiments on ImageNet for image classification tasks​​. For the backbones, they used torchvision pre-trained models.
 
-<div align="center">
-    <img src="Images/ImageNet.png" alt="Image" width="600" height="200">
-</div>
 
-- Also, for out-of-distribution (OOD) detection, the [SVHN (Street View House Numbers) dataset](http://ufldl.stanford.edu/housenumbers/) was used. It consists of images of house numbers extracted from Google Street View, providing a real-world setting with various backgrounds and lighting conditions. The dataset contains over 600,000 digit images, with a primary focus on street view house numbers. Each image is a 32x32 pixel color image, with digits ranging from 0 to 9.
-
-<div align="center">
-    <img src="Images/SVHN.png" alt="Image" width="800" height="200">
-</div>
-
-The paper also provides details on the fast computation of the models compared to other uncertainty-based models. The training time for CIFAR-10 and CIFAR-100 datasets on ResNet-50 and WideResNet-28x10 backbones was 12 hours in total on a single RTX 3090.
-
-### 3.1.2  Semantic Segmentation
 
 1. [StreetHazards](https://github.com/Jun-CEN/Open-World-Semantic-Segmentation?tab=readme-ov-file): This dataset comprises synthetic street scenes with pixel-wise annotations for 13 classes. The dataset is designed for semantic segmentation tasks. The classes represent various street elements, such as road, sidewalk, building, traffic light, traffic sign, and sky. In total, there are 5,125 training images and 1,500 test images. The test set also contains an additional 250 out-of-distribution classes. The paper employed DeepLabv3+ with a ResNet-50 encoder as a backbone, as introduced by Chen et al. [4].
 
-<div align="center">
-    <img src="Images/StreetHazards.png" alt="Image" width="400" height="300">
-</div>
 
 2. [BDD-Anomaly](https://github.com/daniel-bogdoll/anomaly_datasets/blob/main/datasets/bdd-anomaly.py): BDD-Anomaly is a subset of the BDD100K dataset, focusing on street scenes with 17 distinct classes in the training set. The classes represent common elements in street scenes, including road, sidewalk, building, traffic light, traffic sign, vegetation, and more. The training set contains 6,688 images, while the test set has 361 images. The test set also introduces two additional out-of-distribution (OOD) classes, namely motorcycle and train.The paper employed ResNet-50 encoder as a backbone​​.
 
 3. [MUAD](https://muad-dataset.github.io/):  This dataset consists of various images for semantic segmentation, containing 21 classes and additional out-of-distribution (OOD) classes representing object anomalies and animals. The dataset includes classes mirroring those in the CityScapes dataset, such as road, sidewalk, building, and more. It also has additional classes for object anomalies and animals, adding to the dataset's diversity. The training set has 3,420 images, the validation set has 492 images, and the test set contains 6,501 images. The test set is diverse, with subsets like "normal," "normal with no shadow," and "out-of-distribution" representing different conditions. In the study, a DeepLabV3+ with a ResNet50 encoder was employed.
-
-<div align="center">
-    <img src="Images/MUAD.png" alt="Image" width="200" height="600">
-</div>
 
 
 ## 3.2. Running the code
