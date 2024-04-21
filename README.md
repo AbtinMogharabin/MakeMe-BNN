@@ -7,19 +7,20 @@ This readme file is an outcome of the [CENG502 (Spring 2024)](https://ceng.metu.
    - [Paper summary](#11-paper-summary)
 2. [The method and my interpretation](#2-the-method-and-my-interpretation)
    - [The original method](#21-the-original-method)
-     - [Model General Overview](#211-model-general-overview)
-     - [Bayesian Normalization Layers (BNLs)](#212-bayesian-normalization-layers-bnls)
-     - [Fine-tuning the ABNN](#213-fine-tuning-the-abnn)
-     - [Inference with ABNN](#214-inference-with-abnn)
+     - [Model General Overview](#211--model-general-overview)
+     - [Bayesian Normalization Layers (BNLs)](#212--bayesian-normalization-layers-bnls)
+     - [Fine-tuning the ABNN](#213--fine-tuning-the-abnn)
+     - [Inference with ABNN](#214--inference-with-abnn)
    - [Our interpretation](#22-our-interpretation)
 3. [Experiments and results](#3-experiments-and-results)
    - [Experimental setup](#31-experimental-setup)
-     - [Image Classification](#311-image-classification)
-     - [Semantic Segmentation](#3111-semantic-segmentation)
+     - [Image Classification](#311--image-classification)
+     - [Semantic Segmentation](#3111--semantic-segmentation)
    - [Running the code](#32-running-the-code)
    - [Results](#33-results)
 4. [Conclusion](#4-conclusion)
 5. [References](#5-references)
+6. [Contact](#6-contact)
 
 # Table of Figures
 - Figure 1: [Brief Evaluation of ABNN](#figure-1-brief-evaluation-of-abnn)
@@ -343,7 +344,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 12. Cordts, Marius, et al. "The cityscapes dataset for semantic urban scene understanding." In CVPR, 2016.
 
-# 🔗 Contact
+# 6. Contact
 
 **Name: Abtin Mogharabin**
 
