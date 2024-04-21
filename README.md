@@ -23,16 +23,16 @@ This readme file is an outcome of the [CENG502 (Spring 2024)](https://ceng.metu.
 6. [Contact](#6-contact)
 
 # Table of Figures
-- Figure 1: [Brief Evaluation of ABNN](#figure-1-brief-evaluation-of-abnn)
-- Figure 2: [Approach Illustration](#figure-2-approach-illustration)
-- Figure 3: [General Model Training Procedure](#figure-3-general-model-training-procedure)
+- Figure 1: [Brief Evaluation of ABNN](#Brief)
+- Figure 2: [Approach Illustration](#Approach)
+- Figure 3: [General Model Training Procedure](#Procedure)
 - Figure 4: [CIFAR-10 Dataset](#CIFAR-10)
-- Figure 5: [ImageNet Dataset](#figure-5-imagenet-dataset)
-- Figure 6: [SVHN Dataset](#figure-6-svhn-dataset)
-- Figure 7: [DTD Dataset](#figure-7-dtd-dataset)
-- Figure 8: [StreetHazards Dataset](#figure-8-streethazards-dataset)
-- Figure 9: [MUAD Dataset](#figure-9-muad-dataset)
-- Figure 10: [CityScapes Dataset](#figure-10-cityscapes-dataset)
+- Figure 5: [ImageNet Dataset](#ImageNet)
+- Figure 6: [SVHN Dataset](#SVHN)
+- Figure 7: [DTD Dataset](#DTD)
+- Figure 8: [StreetHazards Dataset](#StreetHazards)
+- Figure 9: [MUAD Dataset](#MUAD)
+- Figure 10: [CityScapes Dataset](#CityScapes)
 
 
 # 1. Introduction
@@ -47,16 +47,18 @@ ABNN preserves the main predictive properties of DNNs while enhancing their unce
 
 <div align="center">
     <img src="Images/Brief-Evaluation.png" alt="Brief" width="800" height="320">
+    <p id="Brief"></p>  
 </div>
 
 In this repository, we make an effort to reproduce the methods and results of the paper based on the descriptions provided.
 
 ## 1.1. Paper summary
 
-The ABNN approach starts with a pre-trained DNN. It transforms it into a Bayesian Neural Network (BNN) by introducing Bayesian Normalization Layers (BNLs) to the existing normalization layers (like batch or layer normalization). This transformation involves adding Gaussian noise to the normalization process, thereby incorporating uncertmodelsnto the model's predictions without extensive retraining. The process is designed to be computationally efficient, requiring only minimal additional training (fine-tuning) to adjust the new layers, making it feasible to implement on existing models without significant computational overhead.
+The ABNN approach starts with a pre-trained DNN. It transforms it into a Bayesian Neural Network (BNN) by introducing Bayesian Normalization Layers (BNLs) to the existing normalization layers (like batch or layer normalization). This transformation involves adding Gaussian noise to the normalization process, thereby incorporating uncertainty in the model's predictions without extensive retraining. The process is designed to be computationally efficient, requiring only minimal additional training (fine-tuning) to adjust the new layers, making it feasible to implement on existing models without significant computational overhead.
 
 <div align="center">
     <img src="Images/Approach-Illustration.png" alt="Approach" width="800" height="300">
+    <p id="Approach"></p>  
 </div>
 
 The key contributions of this paper are as follows:
@@ -66,15 +68,15 @@ The key contributions of this paper are as follows:
 - ABNN can estimate the posterior distribution around the local minimum of the pre-trained model in a resource-efficient manner while still achieving competitive uncertainty estimates with diversity. The results indicate that ABNN achieves comparable or superior performance in uncertainty estimation and predictive accuracy compared to existing state-of-the-art methods like Deep Ensembles and other Bayesian methods in both in- and out-of-distribution settings
 - Stability and Performance: It is noted that ABNN offers more stable training dynamics compared to traditional BNNs, which are often plagued by training instabilities. The use of Bayesian Normalization Layers helps mitigate these issues, providing a smoother training process and robustness in performance.
 - ABNN allows for sequential training of multiple BNNs starting from the same checkpoint, thus modeling various modes within the actual posterior distribution.
-- It is also observed that the variance of othABNN'sientnt foABNN’s parameters is lower compared to that of a classic BNN, resulting in a more stable backpropagation.
+- It is also observed that the variance of othABNN'sientnt foABNN's parameters is lower compared to that of a classic BNN, resulting in a more stable backpropagation.
 - Based on my review, this paper demonstrates one of the very few efforts to translate a deterministic model into a Bayesian version after the training of the deterministic model is finished. To name the two most relevant approaches:
   1. **Deterministic Variational Inference Approach:**
      - One paper employs deterministic variational inference techniques to integrate Bayesian methods into trained deterministic neural networks. It introduces closed-form variance priors for the network weights, allowing the deterministic model to handle uncertainty estimations through a robust Bayesian framework after its initial training [2].
-     - Compared to this approach, which requires extensive modifications to the network’s inference process to accommodate the new Bayesian priors, the "Make Me a BNN" paper introduces a method that is notably simpler and potentially faster, as it leverages existing normalization layers within pre-trained DNNs to implement Bayesian functionality.
+     - Compared to this approach, which requires extensive modifications to the network's inference process to accommodate the new Bayesian priors, the "Make Me a BNN" paper introduces a method that is notably simpler and potentially faster, as it leverages existing normalization layers within pre-trained DNNs to implement Bayesian functionality.
 
   2. **Decoupled Bayesian Stage Approach:**
      - Another study involves a decoupled Bayesian stage applied to a pre-trained deterministic neural network. This method uses a Bayesian Neural Network to recalibrate the outputs of the deterministic model, thereby improving its predictive uncertainty without retraining the entire network from scratch [3].
-     - Unlike the "Make Me a BNN" paper's straightforward approach, this method. At the same time, effective improving calibration involves adding an entirely new Bayesian processing layer, which might not be as efficient or straightforward in terms of retrofitting existing models with Bayesian capabilities.
+     - Unlike the "Make Me a BNN" paper's straightforward approach, this method. At the same time, effective calibration improvement involves adding an entirely new Bayesian processing layer, which might need to be more efficient and straightforward in terms of retrofitting existing models with Bayesian capabilities.
 
 
 # 2. The method and my interpretation
@@ -95,12 +97,12 @@ After these modifications, the general model training procedure is as follows:
 
 <div align="center">
     <img src="Images/Training-Procedure.png" alt="Procedure" width="400" height="580">
-    <p>Figure 3: This image represents the general model training procedure</p>  
+    <p id= "Procedure">Figure 3: This image represents the general model training procedure</p>  
 </div>
 
 ### 2.1.2  Bayesian Normalization Layers (BNLs)
 
-The BNL is the core of the ABNN approach, which adapts conventional normalization layers by incorporating Gaussian noise to model uncertainty. Here’s the detailed equation for the BNL:
+The BNL is the core of the ABNN approach, which adapts conventional normalization layers by incorporating Gaussian noise to model uncertainty. Here's the detailed equation for the BNL:
 
 $$
 u_j = \text{BNL}(W_j h_{j-1})
@@ -162,7 +164,7 @@ P(y | x, D) \approx \frac{1}{ML} \sum_{l=1}^L \sum_{m=1}^M P(y | x, \omega_m, \e
 $$
 
 Where:
-- $P(y | x, D)$: The probbility of the output (y) depending on the input (x) and the whole training dataset (D).
+- $P(y | x, D)$: The probability of the output (y) depending on the input (x) and the whole training dataset (D).
 - $M$: Number of models (ensemble members).
 - $L$: Number of noise samples (stochastic forward passes).
 - $\omega_m$: Parameters of the $m$-th model configuration.
@@ -195,16 +197,16 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 </div>
 
 2. **ImageNet**:
-   - **Description**: A large dataset designed for use in visual object recognition software research, more than 14 million images have been hand-annotated to indicate what objects are pictured and in at least one million of the images, bounding boxes are also provided.
+   - **Description**: A large dataset designed for use in visual object recognition software research, more than 14 million images have been hand-annotated to indicate what objects are pictured, and in at least one million of the images, bounding boxes are also provided.
    - **Usage**: Utilized for image classification tasks, specifically tested with ResNet-50 and Vision Transformers (ViT).
-   - **Dimension**: There are various dimensions in ImageNet, but typically resized to 224x224 pixels for model training.
-   - **Data Split**: It is significantly larger, with over 1.2 million training images and 50,000 validation images.   
+   - **Dimension**: There are various dimensions in ImageNet, but they are typically resized to 224x224 pixels for model training.
+   - **Data Split**: It is significantly more prominent, with over 1.2 million training images and 50,000 validation images.   
    - **Results**: ABNN demonstrated an accuracy of 79.5% with ResNet-50 and 80.6% with ViT.
    - **Reference**: [Deng, Jia, et al. "Imagenet: A large-scale hierarchical image database." In CVPR, 2009](https://www.image-net.org/download.php)
 
 <div align="center">
     <img src="Images/ImageNet.png" alt="ImageNet" width="600" height="200">
-    <p>Figure 5: This image represents the ImageNet dataset </p>     
+    <p id="ImageNet">Figure 5: This image represents the ImageNet dataset </p>     
 </div>
 
 3. **Street View House Numbers (SVHN)**:
@@ -212,12 +214,12 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
    - **Usage**: Used as an out-of-distribution dataset for models trained on CIFAR-10/100 to test their generalization and uncertainty estimation.
    - **Dimension**: Images in SVHN, like CIFAR, are small, often 32x32 pixels.
    - **Data Split**: Contains over 600,000 images used typically for testing generalization beyond the training data of different datasets.
-   - **Results**: Used as an out-of-distribution dataset to test the generalization of models trained on CIFAR-10/100. Specific performance metrics in this context were not detailed for SVHN in the paper.
+   - **Results**: Used as an out-of-distribution dataset to test the generalization of models trained on CIFAR-10/100. In the paper, specific performance metrics in this context were not detailed for SVHN.
    - **Repository**: [Netzer, Yuval, et al. "Reading digits in natural images with unsupervised feature learning." In NeurIPSW, 2011](http://ufldl.stanford.edu/housenumbers/)
   
 <div align="center">
     <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/9b6682c7-7b69-4e86-8792-fdc556f8f516" alt="SVHN" width="600" height="200">
-    <p>Figure 6: This image represents the SVHN dataset in full numbers format </p>     
+    <p id="SVHN">Figure 6: This image represents the SVHN dataset in full numbers format </p>     
 </div>
 
 4. **Describable Textures Dataset (DTD)**:
@@ -225,12 +227,12 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
    - **Usage**: Used as an out-of-distribution dataset in experiments with models trained on ImageNet.
    - **Dimension**: Typically processed to fit the input size (224x224 pixels) requirements of the ImageNet model.
    - **Data Split**: Consists of 5,640 images categorized into 47 categories.   
-   - **Results**: Employed as an OOD dataset for ImageNet-trained models. Performance details specific to DTD were not detailed in the paper.
+   - **Results**: Employed as an OOD dataset for ImageNet-trained models. Performance details specific to DTD needed to be more detailed in the paper.
    - **Repository**: [Cimpoi, M., Maji, S., Kokkinos, I., Mohamed, S., & Vedaldi, A. Describing textures in the wild. In Proceedings of the CVPR. 2014](https://www.robots.ox.ac.uk/~vgg/data/dtd/) 
 
 <div align="center">
     <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/7bff9c55-5124-448a-ba62-2b90554dbd3d" alt="DTD" width="1200" height="200">
-    <p>Figure 7: This image represents the DTD dataset</p>     
+    <p id="DTD">Figure 7: This image represents the DTD dataset</p>     
 </div>
 
 *The paper also provides details on the fast computation of the models compared to other uncertainty-based models. The training time for CIFAR-10 and CIFAR-100 datasets on ResNet-50 and WideResNet-28x10 backbones was 12 hours in total on a single RTX 3090.*
@@ -238,7 +240,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 #### 3.1.1.1  Semantic Segmentation
 
 5. **StreetHazards**:
-   - **Description**: Part of the larger BDD100K dataset, designed specifically for benchmarking anomaly detection in the context of street scenes.
+   - **Description**: Part of the larger BDD100K dataset, explicitly designed for benchmarking anomaly detection in the context of street scenes.
    - **Usage**: Used to assess model performance in semantic segmentation tasks and uncertainty estimation.
    - **Dimension**: Typically used dimensions might range around 512x256 pixels because it includes complex street scenes.
    - **Data Split**: Comprises 5,125 training images and 1,500 testing images, including additional out-of-distribution objects.   
@@ -247,7 +249,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 <div align="center">
     <img src="Images/StreetHazards.png" alt="StreetHazards" width="600" height="400">
-    <p>Figure 8: This image represents the StreetHazards dataset</p>     
+    <p id="StreetHazards">Figure 8: This image represents the StreetHazards dataset</p>     
 </div>
 
 6. **BDD-Anomaly**:
@@ -268,7 +270,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 <div align="center">
     <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/cd3977a1-5688-40a1-94cc-b6bb2112e38d" alt="MUAD" width="1200" height="200">
-    <p>Figure 9: This image represents example on the MUAD dataset</p>     
+    <p id="MUAD">Figure 9: This image represents examples on the MUAD dataset</p>     
 </div>
 
 
@@ -277,12 +279,12 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
    - **Usage**: Commonly used for semantic segmentation tasks in urban settings.
    - **Dimension**: Images are high-resolution, typically used at 2048x1024 pixels, providing detailed urban scenes for segmentation.
    - **Data Split**: Includes 3,475 images split across training, validation, and test sets.   
-   - **Results**: Specific results for ABNN on CityScapes were not detailed in the paper.
+   - **Results**: Specific results for ABNN on CityScapes needed to be detailed in the paper.
    - **Repository**: [Cordts, Marius, et al. "The cityscapes dataset for semantic urban scene understanding." In CVPR, 2016](https://www.cityscapes-dataset.com/)
 
 <div align="center">
     <img src="https://github.com/AbtinMogharabin/MakeMe-BNN/assets/87785000/d530572c-305d-4ea9-85ff-f28b12f924b9" alt="CityScapes" width="600" height="400">
-    <p>Figure 10: This image represents example on the CityScapes dataset</p>     
+    <p id="CityScapes">Figure 10: This image represents examples on the CityScapes dataset</p>     
 </div>
 
 
@@ -320,7 +322,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 # 5. References
 
-1. Franchi, G., Laurent, O., Leguéry, M., Bursuc, A., Pilzer, A., & Yao, A. (2024). Make Me a BNN: A Simple Strategy for Estimating Bayesian Uncertainty from Pre-trained Models. Conference on Computer Vision and Pattern Recognition.
+1. Franchi, G., Laurent, O., Leguéry, M., Bursuc, A., Pilzer, A., & Yao, A. (2024). Make Me a BNN: A Simple Strategy for Estimating Bayesian Uncertainty from Pre-trained Models—conference on Computer Vision and Pattern Recognition.
 
 2. Wu, A., Nowozin, S., Meeds, E., Turner, R.E., Hernández-Lobato, J.M. & Gaunt, A.L. (2018). Deterministic variational inference for robust Bayesian neural networks. International Conference on Learning Representations.
 
