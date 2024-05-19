@@ -172,7 +172,7 @@ def replace_normalization_layers(original_model_path, new_model_name, save_new_m
 # new_model_name = 'ABNNNet'        # The name of the new model
 # save_new_model='ABNNNet.py'       # The file to save the new model
 # replace_normalization_layers(original_model_path, new_model_name, save_new_model)
-
+# Now export and check the new ABNN version of your original model
 # from ABNNNet import ABNNNet
 # model = ABNNNet()
 # print(model)
