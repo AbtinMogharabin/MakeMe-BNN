@@ -1,2 +1,4 @@
 ABNN/datasets/dtd-r1.0.1.tar.gz
 ABNN/datasets/tiny-imagenet-200.zip
+data/*
+data/cifar-10-batches-py/batches.meta
