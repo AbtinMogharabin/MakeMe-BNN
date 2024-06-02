@@ -35,6 +35,8 @@ class BNL(nn.Module):
     inference, making the model more robust to variations and uncertainties in 
     the data.
 
+    BNL adds gaussian noise during both inference and trainig stages.
+
     Args:
         num_features (int): The number of features in the input.
 
@@ -51,13 +53,13 @@ class BNL(nn.Module):
         self.eps = 1e-5
 
     def forward(self, x):
-        if x.dim() == 4:  # Input is 4D
+        if x.dim() == 4:  # 4D Input: Used for mini-batch of images. The four dimensions are [batch size, channels, height, width]
             batch_mean = torch.mean(x, dim=(0, 2, 3), keepdim=True)
             batch_var = torch.var(x, dim=(0, 2, 3), keepdim=True)
             noise = torch.randn(x.shape[0], self.num_features, 1, 1).to(x.device)
             x = (x - batch_mean) / torch.sqrt(batch_var + self.eps)
             x = x * (self.gamma_4d * (1 + noise)) + self.beta_4d
-        elif x.dim() == 2:  # Input is 2D
+        elif x.dim() == 2:  # 2D Input: common for in fully connected layers. The two dimensions are [batch size, features]
             batch_mean = torch.mean(x, dim=0, keepdim=True)
             batch_var = torch.var(x, dim=0, keepdim=True)
             noise = torch.randn(x.shape[0], self.num_features).to(x.device)
