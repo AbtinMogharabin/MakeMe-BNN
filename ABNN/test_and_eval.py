@@ -35,12 +35,13 @@ import numpy as np
 from sklearn.metrics import precision_recall_curve, roc_curve, auc, f1_score
 import matplotlib.pyplot as plt
 from netcal.metrics import ECE
-
+from ABNN import CustomMAPLoss
 def test_model_with_metrics(loss_fn: nn.Module, model: nn.Module, test_loader: DataLoader, load_path: str = 'vit_mnist.pth',
                calculate_uncert: bool = False, calculate_nll_loss: bool = False, calculate_ece_error: bool = False,
                calculate_auprc: bool = False, calculate_auc_roc: bool = False, calculate_fpr_95: bool = False, 
                count_params: bool = False, plot_uncert: bool = False, predict_uncert: bool = False, 
-               model_class: type = None, models: list = None, num_samples: int = 10, num_classes: int = 10) -> None:
+               model_class: type = None, models: list = None, num_samples: int = 10, num_classes: int = 10,
+               Weight_decay: float = 5e-4) -> None:
     """
     Evaluates the model on the test dataset with various metrics.
 
@@ -62,14 +63,19 @@ def test_model_with_metrics(loss_fn: nn.Module, model: nn.Module, test_loader: D
         models (list): List of state dictionaries for ensemble prediction.
         num_samples (int): Number of Monte Carlo samples for uncertainty estimation.
         num_classes (int): Number of classes in the dataset.
+        Weight_decay (float): Weight_decay of customMapLoss function.
     """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.load_state_dict(torch.load(load_path))
+    model.load_state_dict(torch.load(load_path), strict=False)
     model.to(device)
     model.eval()  # Set the model to evaluation mode
 
-    criterion = loss_fn
-
+    
+    
+    if loss_fn == "CustomMAPLoss":
+        criterion = CustomMAPLoss(num_classes=num_classes, weight_decay=Weight_decay,Model=model)
+    else:
+        criterion = loss_fn
     correct = 0
     total = 0
     test_loss = 0.0

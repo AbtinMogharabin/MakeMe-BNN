@@ -80,16 +80,17 @@ class CustomMAPLoss(nn.Module):
     Args:
         num_classes (int): Number of classes in the dataset.
         weight_decay (float): Weight decay factor for the prior term.
+        model (nn.Module): Weight decay factor for the prior term.
 
     Methods:
-        forward(outputs, labels, model): Computes the total loss for the given outputs 
+        forward(outputs, labels): Computes the total loss for the given outputs 
                                          and labels using the MAP and epsilon terms.
     """
-    def __init__(self, num_classes,model, weight_decay=1e-4):
+    def __init__(self, num_classes, weight_decay,Model):
         super(CustomMAPLoss, self).__init__()
         self.num_classes = num_classes
         self.weight_decay = weight_decay
-        self.model = model
+        self.model = Model
         self.criterion = nn.CrossEntropyLoss(reduction='none')
         self.eta = np.random.uniform(0, 1, num_classes)  # Random weights for each class
 
