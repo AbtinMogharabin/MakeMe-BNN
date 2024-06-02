@@ -54,21 +54,15 @@ class BNL(nn.Module):
         if x.dim() == 4:  # Input is 4D
             batch_mean = torch.mean(x, dim=(0, 2, 3), keepdim=True)
             batch_var = torch.var(x, dim=(0, 2, 3), keepdim=True)
-            if self.training:
-                x = (x - batch_mean) / torch.sqrt(batch_var + self.eps)
-            else:
-                noise = torch.randn(x.shape[0], self.num_features, 1, 1).to(x.device)
-                x = (x - batch_mean) / torch.sqrt(batch_var + self.eps)
-                x = x * (self.gamma_4d * (1 + noise)) + self.beta_4d
+            noise = torch.randn(x.shape[0], self.num_features, 1, 1).to(x.device)
+            x = (x - batch_mean) / torch.sqrt(batch_var + self.eps)
+            x = x * (self.gamma_4d * (1 + noise)) + self.beta_4d
         elif x.dim() == 2:  # Input is 2D
             batch_mean = torch.mean(x, dim=0, keepdim=True)
             batch_var = torch.var(x, dim=0, keepdim=True)
-            if self.training:
-                x = (x - batch_mean) / torch.sqrt(batch_var + self.eps)
-            else:
-                noise = torch.randn(x.shape[0], self.num_features).to(x.device)
-                x = (x - batch_mean) / torch.sqrt(batch_var + self.eps)
-                x = x * (self.gamma_2d * (1 + noise)) + self.beta_2d
+            noise = torch.randn(x.shape[0], self.num_features).to(x.device)
+            x = (x - batch_mean) / torch.sqrt(batch_var + self.eps)
+            x = x * (self.gamma_2d * (1 + noise)) + self.beta_2d
         else:
             raise ValueError(f"Unsupported input dimensions: {x.dim()}")
         return x
