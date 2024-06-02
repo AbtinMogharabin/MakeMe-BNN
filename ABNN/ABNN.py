@@ -85,14 +85,15 @@ class CustomMAPLoss(nn.Module):
         forward(outputs, labels, model): Computes the total loss for the given outputs 
                                          and labels using the MAP and epsilon terms.
     """
-    def __init__(self, num_classes, weight_decay=1e-4):
+    def __init__(self, num_classes,model, weight_decay=1e-4):
         super(CustomMAPLoss, self).__init__()
         self.num_classes = num_classes
         self.weight_decay = weight_decay
+        self.model = model
         self.criterion = nn.CrossEntropyLoss(reduction='none')
         self.eta = np.random.uniform(0, 1, num_classes)  # Random weights for each class
 
-    def forward(self, outputs, labels, model):
+    def forward(self, outputs, labels):
         # Compute Cross Entropy Loss
         ce_loss = self.criterion(outputs, labels)
 
@@ -105,7 +106,7 @@ class CustomMAPLoss(nn.Module):
 
         # Compute the prior term (weight decay)
         prior_loss = 0
-        for param in model.parameters():
+        for param in self.model.parameters():
             prior_loss += torch.sum(param ** 2)
         prior_loss *= self.weight_decay / 2
 
