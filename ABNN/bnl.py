@@ -17,11 +17,11 @@ class BNL(nn.Module):
         if self.training:
             # Compute batch mean and variance over the appropriate dimensions
             if x.dim() == 2:  # If input is (batch_size, num_features)
-                batch_mean = torch.mean(x, dim=0)
-                batch_var = torch.var(x, dim=0, unbiased=False)
+                batch_mean = torch.mean(x, dim=0).to(x.device).to(x.device)  
+                batch_var = torch.var(x, dim=0, unbiased=False).to(x.device) 
             elif x.dim() == 4:  # If input is (batch_size, num_channels, height, width)
-                batch_mean = torch.mean(x, dim=[0, 2, 3])
-                batch_var = torch.var(x, dim=[0, 2, 3], unbiased=False)
+                batch_mean = torch.mean(x, dim=[0, 2, 3]).to(x.device) 
+                batch_var = torch.var(x, dim=[0, 2, 3], unbiased=False).to(x.device) 
             else:
                 raise ValueError(f"Unexpected input dimensions: {x.dim()}")
 
@@ -34,7 +34,7 @@ class BNL(nn.Module):
 
         # Add Gaussian noise to gamma
         if self.training:
-            self.epsilon = torch.randn(self.num_features) * self.epsilon_std
+            self.epsilon = torch.randn(self.num_features).to(x.device) * self.epsilon_std
         gamma_noisy = self.gamma * (1 + self.epsilon)
 
         # Normalize the input
