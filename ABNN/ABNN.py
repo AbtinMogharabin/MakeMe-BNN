@@ -69,7 +69,26 @@ class BNL(nn.Module):
             raise ValueError(f"Unsupported input dimensions: {x.dim()}")
         return x
 
-class CustomMAPLoss(nn.Module):
+
+def negative_log_likelihood(outputs, labels):
+    # Negative Log Likelihood (NLL) or MLE Loss:
+    # NLL = -∑ log P(y_i | x_i, ω)
+    return torch.nn.functional.cross_entropy(outputs, labels)
+
+def negative_log_prior(model, weight_decay=1e-4):
+    # Negative Log Prior (L2 Regularization):
+    # log P(ω) = λ ∑ ω^2
+    l2_reg = sum(p.pow(2).sum() for p in model.parameters())
+    return weight_decay * l2_reg
+
+def custom_cross_entropy_loss(outputs, labels, eta):
+    # Custom Cross-Entropy Loss:
+    # E(ω) = -∑ η_i log P(y_i | x_i, ω)
+    log_probs = torch.nn.functional.log_softmax(outputs, dim=1)
+    weighted_log_probs = eta * log_probs.gather(1, labels.unsqueeze(1)).squeeze(1)
+    return -torch.mean(weighted_log_probs)
+
+class ABNNLoss(torch.nn.Module):
     """
     Custom Maximum A Posteriori (MAP) Loss.
 
@@ -86,37 +105,20 @@ class CustomMAPLoss(nn.Module):
         forward(outputs, labels): Computes the total loss for the given outputs 
                                          and labels using the MAP and epsilon terms.
     """
-    def __init__(self, num_classes, weight_decay,Model):
-        super(CustomMAPLoss, self).__init__()
-        self.num_classes = num_classes
+    def __init__(self, weight_decay=1e-4):
+        super(ABNNLoss, self).__init__()
         self.weight_decay = weight_decay
-        self.model = Model
-        self.criterion = nn.CrossEntropyLoss(reduction='none')
-        self.eta = np.random.uniform(0, 1, num_classes)  # Random weights for each class
 
-    def forward(self, outputs, labels):
-        # Compute Cross Entropy Loss
-        ce_loss = self.criterion(outputs, labels)
+    def forward(self, outputs, labels, model, eta):
+        # Calculate the three loss components
+        nll_loss = negative_log_likelihood(outputs, labels)
+        log_prior_loss = negative_log_prior(model, self.weight_decay)
+        custom_ce_loss = custom_cross_entropy_loss(outputs, labels, eta)
 
-        # Compute class-dependent random weights
-        class_weights = torch.tensor([self.eta[label] for label in labels], device=outputs.device)
-        weighted_loss = ce_loss * class_weights
-
-        # Compute the log-likelihood loss
-        log_likelihood_loss = ce_loss.mean()
-
-        # Compute the prior term (weight decay)
-        prior_loss = 0
-        for param in self.model.parameters():
-            prior_loss += torch.sum(param ** 2)
-        prior_loss *= self.weight_decay / 2
-
-        # Combine the MAP loss and the epsilon term
-        map_loss = log_likelihood_loss + prior_loss
-        epsilon_term = weighted_loss.mean()
-        total_loss = map_loss + epsilon_term
-
+        # Sum up all three components to form the ABNN loss
+        total_loss = nll_loss + log_prior_loss + custom_ce_loss
         return total_loss
+
 
 def replace_normalization_layers(original_model_path, new_model_name, save_new_model):
     """
