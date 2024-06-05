@@ -64,7 +64,8 @@ def train_model(model: nn.Module, train_loader: DataLoader, val_loader: DataLoad
     Returns:
         train_losses (tuple): A tuple containing lists of training losses per epoch.
         val_losses (tuple): A tuple containing lists of validation losses per epoch.
-    """    
+    """  
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  
     if BNL_enable:
         model.load_state_dict(torch.load(BNL_load_path),strict=False)
         print("BNL model loaded from {}".format(BNL_load_path))
@@ -82,7 +83,8 @@ def train_model(model: nn.Module, train_loader: DataLoader, val_loader: DataLoad
     elif Loss_fn == 'MSELoss':
         criterion = nn.MSELoss()
     elif Loss_fn == 'CustomMAPLoss':
-        criterion = CustomMAPLoss(num_classes=Num_classes, weight_decay=Weight_decay)    
+        eta = torch.ones(Num_classes)
+        criterion = CustomMAPLoss(eta, model.parameters()).to(device)    
     else:
         raise ValueError("Unsupported loss function. Implement additional loss functions as needed. Choose either 'CrossEntropyLoss' or 'MSELoss' or 'CustomMAPLoss'")
     

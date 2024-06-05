@@ -20,7 +20,10 @@ class CustomMAPLoss(nn.Module):
         self.prior_std = prior_std
         self.model_parameters = model_parameters
 
-    def forward(self, outputs, targets ):
+    def forward(self, outputs, targets):
+        device = outputs.device  # Get the device of the outputs tensor
+        targets = targets.to(device)  # Move targets to the same device
+
         # Cross-entropy loss (negative log-likelihood)
         nll_loss = self.cross_entropy(outputs, targets)
 
@@ -28,17 +31,20 @@ class CustomMAPLoss(nn.Module):
         perturbation_loss = self.eta[targets] * nll_loss
 
         # MAP loss: LMAP(ω) = -∑ logP(yi | xi, ω) - logP(ω)
-        map_loss = nll_loss.mean() + self.prior_log_prob(self.model_parameters, prior_std)
+        map_loss = nll_loss.mean() + self.prior_log_prob(self.model_parameters, self.prior_std).to(device)
 
         # Total loss: L(ω) = LMAP(ω) + E(ω)
         total_loss = map_loss + perturbation_loss.mean()
 
         return total_loss
 
+
     @staticmethod
     def prior_log_prob(params, std):
         # Compute logP(ω) for a normal prior with standard deviation `std`
         log_prob = 0.0
         for param in params:
+            param = param.to(std.device)  # Move param to the same device as std
             log_prob += -0.5 * torch.sum(param ** 2) / (std ** 2)
         return log_prob
+
