@@ -35,7 +35,7 @@ import numpy as np
 from sklearn.metrics import precision_recall_curve, roc_curve, auc, f1_score
 import matplotlib.pyplot as plt
 from netcal.metrics import ECE
-from ABNN import CustomMAPLoss
+from ABNN.map import CustomMAPLoss
 def test_model_with_metrics(loss_fn: nn.Module, model: nn.Module, test_loader: DataLoader, load_path: str = 'vit_mnist.pth',
                calculate_uncert: bool = False, calculate_nll_loss: bool = False, calculate_ece_error: bool = False,
                calculate_auprc: bool = False, calculate_auc_roc: bool = False, calculate_fpr_95: bool = False, 
