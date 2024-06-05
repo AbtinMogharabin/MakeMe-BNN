@@ -19,6 +19,15 @@ class BNL(nn.Module):
         self.epsilon = torch.randn(num_features) * self.epsilon_std
 
     def forward(self, x):
+        device = x.device  # Get the device of the input tensor
+        
+        # Ensure running statistics are on the same device
+        self.running_mean = self.running_mean.to(device)
+        self.running_var = self.running_var.to(device)
+        self.gamma = self.gamma.to(device)
+        self.beta = self.beta.to(device)
+        self.epsilon = self.epsilon.to(device)
+
         if self.training:
             batch_mean = torch.mean(x, dim=[0, 2, 3])
             batch_var = torch.var(x, dim=[0, 2, 3], unbiased=False)
@@ -32,10 +41,11 @@ class BNL(nn.Module):
 
         # Add Gaussian noise to gamma
         if self.training:
-            self.epsilon = torch.randn(self.num_features) * self.epsilon_std
+            self.epsilon = torch.randn(self.num_features, device=device) * self.epsilon_std
         gamma_noisy = self.gamma * (1 + self.epsilon)
 
         # Normalize the input
         x_normalized = (x - batch_mean[None, :, None, None]) / torch.sqrt(batch_var[None, :, None, None] + 1e-5)
         
         return gamma_noisy[None, :, None, None] * x_normalized + self.beta[None, :, None, None]
+
