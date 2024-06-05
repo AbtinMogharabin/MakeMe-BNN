@@ -40,7 +40,7 @@ def test_model_with_metrics(loss_fn: nn.Module, model: nn.Module, test_loader: D
                calculate_uncert: bool = False, calculate_nll_loss: bool = False, calculate_ece_error: bool = False,
                calculate_auprc: bool = False, calculate_auc_roc: bool = False, calculate_fpr_95: bool = False, 
                count_params: bool = False, plot_uncert: bool = False, predict_uncert: bool = False, 
-               model_class: type = None, models: list = None, num_samples: int = 10, num_classes: int = 10,
+               model_class: type = None, models: list = None, num_samples: int = 40, num_classes: int = 10,
                Weight_decay: float = 5e-4) -> None:
     """
     Evaluates the model on the test dataset with various metrics.
@@ -73,7 +73,8 @@ def test_model_with_metrics(loss_fn: nn.Module, model: nn.Module, test_loader: D
     
     
     if loss_fn == "CustomMAPLoss":
-        criterion = CustomMAPLoss(num_classes=num_classes, weight_decay=Weight_decay,Model=model)
+        eta = torch.ones(num_classes)
+        criterion = CustomMAPLoss(eta, model.parameters()).to(device)    
     else:
         criterion = loss_fn
     correct = 0
