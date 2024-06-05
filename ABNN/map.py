@@ -24,6 +24,9 @@ class CustomMAPLoss(nn.Module):
         device = outputs.device  # Get the device of the outputs tensor
         targets = targets.to(device)  # Move targets to the same device
 
+        # Ensure eta is on the same device
+        self.eta = self.eta.to(device)
+
         # Cross-entropy loss (negative log-likelihood)
         nll_loss = self.cross_entropy(outputs, targets)
 
@@ -37,6 +40,7 @@ class CustomMAPLoss(nn.Module):
         total_loss = map_loss + perturbation_loss.mean()
 
         return total_loss
+
 
 
     @staticmethod
