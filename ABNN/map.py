@@ -34,7 +34,7 @@ class CustomMAPLoss(nn.Module):
         perturbation_loss = self.eta[targets] * nll_loss
 
         # MAP loss: LMAP(ω) = -∑ logP(yi | xi, ω) - logP(ω)
-        map_loss = nll_loss.mean() + self.prior_log_prob(self.model_parameters, self.prior_std).to(device)
+        map_loss = nll_loss.mean() + self.prior_log_prob(self.model_parameters, self.prior_std)
 
         # Total loss: L(ω) = LMAP(ω) + E(ω)
         total_loss = map_loss + perturbation_loss.mean()
@@ -48,7 +48,7 @@ class CustomMAPLoss(nn.Module):
         # Compute logP(ω) for a normal prior with standard deviation `std`
         log_prob = 0.0
         for param in params:
-            param = param.to(std.device)  # Move param to the same device as std
+            param = param.to(std)  # Move param to the same device as std
             log_prob += -0.5 * torch.sum(param ** 2) / (std ** 2)
         return log_prob
 
