@@ -38,6 +38,13 @@ class ABNNLoss(torch.nn.Module):
         # Negative Log Prior (L2 Regularization):
         # log P(ω) = - (1/2σ^2) * Σω_i^2 (Using Gaussian Prior) 
         # 1/2σ^2 acts as the weight decay
+
+        # weight_decay = torch.log(2 * torch.pi * (std_tensor ** 2))
+        # log_prior = 0.0
+        # for param in model.parameters():
+        #     log_prior += -0.5 * torch.sum((param / std_tensor) ** 2 + weight_decay)
+        # return log_prior
+        
         std = torch.tensor(std, dtype=torch.float32)  
         variance = std ** 2
         weight_decay = torch.log(2 * torch.pi * variance) 
