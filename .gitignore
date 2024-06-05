@@ -4,3 +4,6 @@ data/*
 data/cifar-10-batches-py/batches.meta
 ABNN/__pycache__/bnl.cpython-310.pyc
 ABNN/__pycache__/*
+ABNN/datasets/__pycache__/*
+ABNN/deep_learning_models/__pycache__/*
+ABNN/__pycache__/*
