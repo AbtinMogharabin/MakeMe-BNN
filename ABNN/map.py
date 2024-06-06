@@ -55,16 +55,19 @@ class CustomMAPLoss(nn.Module):
 
 
 class ABNNLoss(torch.nn.Module):
-    def __init__(self, num_classes=10, std=1.0, device=None):
+    def __init__(self, Num_classes=10, model_parameters, Weight_decay=1e-4):
         super(ABNNLoss, self).__init__()
-        self.std = std
-        self.device = device if device is not None else torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.eta = nn.Parameter(torch.ones(num_classes, device=self.device))
+        self.model_parameters = model_parameters
+        self.Weight_decay = Weight_decay
+        self.eta = nn.Parameter(torch.ones(Num_classes))
 
-    def forward(self, outputs, labels, model):
+    def forward(self, outputs, labels):
         # Calculate the three loss components
         nll_loss = self.negative_log_likelihood(outputs, labels)
-        log_prior_loss = self.negative_log_prior(model, self.std)
+        print('hi')
+        print(nll_loss)
+        print('hello')
+        log_prior_loss = self.negative_log_prior(self.model_parameters, self.Weight_decay)
         custom_ce_loss = self.custom_cross_entropy_loss(outputs, labels, self.eta)
 
         # Sum up all three components to form the ABNN loss
@@ -73,18 +76,15 @@ class ABNNLoss(torch.nn.Module):
 
     @staticmethod
     def negative_log_likelihood(outputs, labels):
-        # MLE Loss aka Negative Log Likelihood (NLL):
+        # Negative Log Likelihood (NLL) or MLE Loss:
         # NLL = -∑ log P(y_i | x_i, ω)
         return torch.nn.functional.cross_entropy(outputs, labels)
 
-    def negative_log_prior(self, model, std=1.0):
-        # Negative Log Prior (L2 Regularization):
-        # log P(ω) = - (1/2σ^2) * Σω_i^2 (Using Gaussian Prior) 
-        # 1/2σ^2 acts as the weight decay
-        log_prob = 0.0
-        SS = sum((param ** 2).sum() for param in model.parameters()) # Sum of Squares
-        negative_log_prior = 0.5 * SS / (std ** 2)
-        return negative_log_prior
+    def negative_log_prior(self, model_parameters, Weight_decay=1e-4):
+        # Negative Log Prior with Gaussian Prior (L2 Regularization):
+        # log P(ω) = λ ∑ ω^2 where λ (weight decay) = (1/2σ^2)
+        l2_reg = sum(p.pow(2).sum() for p in model_parameters)
+        return Weight_decay * l2_reg
 
     def custom_cross_entropy_loss(self, outputs, labels, eta):
         # Custom Cross-Entropy Loss:
