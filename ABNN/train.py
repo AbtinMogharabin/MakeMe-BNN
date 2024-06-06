@@ -129,6 +129,8 @@ def train_model(model: nn.Module, train_loader: DataLoader, val_loader: DataLoad
 
         scheduler.step()  # Adjust learning rate
 
+        torch.cuda.empty_cache()
+
     # Save the trained model state
     torch.save(model.state_dict(), save_path)
 
