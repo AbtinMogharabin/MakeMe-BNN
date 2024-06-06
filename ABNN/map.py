@@ -55,7 +55,7 @@ class CustomMAPLoss(nn.Module):
 
 
 class ABNNLoss(torch.nn.Module):
-    def __init__(self, Num_classes=10, model_parameters, Weight_decay=1e-4):
+    def __init__(self, Num_classes, model_parameters, Weight_decay=1e-4):
         super(ABNNLoss, self).__init__()
         self.model_parameters = model_parameters
         self.Weight_decay = Weight_decay
