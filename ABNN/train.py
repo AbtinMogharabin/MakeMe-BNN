@@ -67,10 +67,15 @@ def train_model(model: nn.Module, train_loader: DataLoader, val_loader: DataLoad
     """  
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  
     if BNL_enable:
-        model.load_state_dict(torch.load(BNL_load_path),strict=False)
+        state_dict = torch.load(BNL_load_path)
+        filtered_state_dict = {k: v for k, v in state_dict.items() if 'running_mean' not in k and 'running_var' not in k and 'num_batches_tracked' not in k}
+        model.load_state_dict(filtered_state_dict, strict=True)
         print("BNL model loaded from {}".format(BNL_load_path))
         print('Model weights loaded.')
 
+# Load the filtered state dictionary
+abnnnet.load_state_dict(filtered_state_dict, strict=True)
+print('Model weights loaded.')
     if Optimizer_type == 'SGD':
         optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=Momentum, weight_decay=Weight_decay)
     elif Optimizer_type == 'Adam':
