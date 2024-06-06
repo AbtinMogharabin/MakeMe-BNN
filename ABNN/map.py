@@ -64,9 +64,6 @@ class ABNNLoss(torch.nn.Module):
     def forward(self, outputs, labels):
         # Calculate the three loss components
         nll_loss = self.negative_log_likelihood(outputs, labels)
-        print('hi')
-        print(nll_loss)
-        print('hello')
         log_prior_loss = self.negative_log_prior(self.model_parameters, self.Weight_decay)
         custom_ce_loss = self.custom_cross_entropy_loss(outputs, labels, self.eta)
 
