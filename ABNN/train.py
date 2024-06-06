@@ -36,7 +36,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from ABNN.map import CustomMAPLoss, ABNNLoss
 def train_model(model: nn.Module, train_loader: DataLoader, val_loader: DataLoader,
-                epochs: int = 10, learning_rate: float = 0.005, gamma_lr: float = 0.1, 
+                epochs: int = 10, learning_rate: float = 0.005, gamma_lr: float = 0.1, Scheduler = True, 
                 milestones: list = [5, 15], save_path: str = 'model.pth', Weight_decay: float = 5e-4,
                 Momentum: float = 0.9, Optimizer_type: str = 'SGD',  Loss_fn: str = 'CrossEntropyLoss',
                 Num_classes: int = 10, BNL_enable: bool = False, BNL_load_path: str = "model.pth") -> (list, list):
@@ -84,14 +84,15 @@ def train_model(model: nn.Module, train_loader: DataLoader, val_loader: DataLoad
         criterion = nn.MSELoss()
     elif Loss_fn == 'CustomMAPLoss':
         eta = torch.ones(Num_classes)
-        criterion = CustomMAPLoss(Num_classes, model.parameters(), Weight_decay).to(device)    
+        criterion = CustomMAPLoss(eta, model.parameters()).to(device)    
     elif Loss_fn == 'ABNNLoss':
-        criterion = ABNNLoss(eta, model.parameters()).to(device)    
+        criterion = ABNNLoss(Num_classes, model.parameters(), Weight_decay).to(device)    
     else:
         raise ValueError("Unsupported loss function. Implement additional loss functions as needed. Choose either 'CrossEntropyLoss' or 'MSELoss' or 'CustomMAPLoss'")
     
 
-    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=milestones, gamma=gamma_lr)
+    if Scheduler == True:
+       scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=milestones, gamma=gamma_lr)
     train_losses = []
     val_losses = []
 
@@ -127,8 +128,10 @@ def train_model(model: nn.Module, train_loader: DataLoader, val_loader: DataLoad
         # Print epoch summary
         print(f'Epoch {epoch + 1}/{epochs}, Train Loss: {train_losses[-1]:.4f}, Val Loss: {val_losses[-1]:.4f}')
 
-        scheduler.step()  # Adjust learning rate
-
+        if Scheduler == True:
+           scheduler.step()  # Adjust learning rate
+           
+        # Empty the memory Periodically
         torch.cuda.empty_cache()
 
     # Save the trained model state
