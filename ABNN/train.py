@@ -34,7 +34,7 @@ import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
-from ABNN.map import CustomMAPLoss
+from ABNN.map import CustomMAPLoss, ABNNLoss
 def train_model(model: nn.Module, train_loader: DataLoader, val_loader: DataLoader,
                 epochs: int = 10, learning_rate: float = 0.005, gamma_lr: float = 0.1, 
                 milestones: list = [5, 15], save_path: str = 'model.pth', Weight_decay: float = 5e-4,
@@ -84,7 +84,9 @@ def train_model(model: nn.Module, train_loader: DataLoader, val_loader: DataLoad
         criterion = nn.MSELoss()
     elif Loss_fn == 'CustomMAPLoss':
         eta = torch.ones(Num_classes)
-        criterion = CustomMAPLoss(eta, model.parameters()).to(device)    
+        criterion = CustomMAPLoss(Num_classes, model.parameters(), Weight_decay).to(device)    
+    elif Loss_fn == 'ABNNLoss':
+        criterion = ABNNLoss(eta, model.parameters()).to(device)    
     else:
         raise ValueError("Unsupported loss function. Implement additional loss functions as needed. Choose either 'CrossEntropyLoss' or 'MSELoss' or 'CustomMAPLoss'")
     
