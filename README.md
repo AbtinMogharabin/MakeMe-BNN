@@ -228,17 +228,17 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 ## 3.3. Results
 
-| Task               | Dataset (used for backbone training)                       | Method   | Acc   | NLL   | ECE   | AUPR  | AUC   | FPR95 | ΔParam | Time (h) | mIoU  |
-|--------------------|-------------------------------|----------|-------|-------|-------|-------|-------|-------|--------|----------|-------|
-| Image Classification | CIFAR-10 (ResNet-50)          | ABNN     | **95.4**  | 0.215 | **0.845** | **97.0**  | **94.7**  | **15.1**  | 0.16   | **2.0**      | -     |
-| Image Classification | WideResNet-28x10 (CIFAR-10)   | ABNN     | 93.7  | 0.198 | 1.8   | **98.5**  | **96.9**  | **12.6**  | **0.05**   | 5.0      | -     |
-| Image Classification | CIFAR-100 (ResNet-50)         | ABNN     | 78.2  | **0.939** | **5.5**   | **89.4**  | **81.1**  | **50.1**  | 1.16   | 2.0      | -     |
-| Image Classification | CIFAR-10 (WideResNet-28x10)   | ABNN     | 80.4  | **1.08**  | **5.5**   | **85.0**  | **75.0**  | **57.7**  | 0.05   | 4.2      | -     |
-| Image Classification | ImageNet (ResNet-50) including OOD         | ABNN     | **79.5**  | 9.65  | 17.8  | 17.8  | **82.0**  | 65.2  | -     | -      | -        | -     |
-| Image Classification | ImageNet (ViT) including OOD              | ABNN     | 80.6  | **4.32**  | **21.7**  | **21.7**  | **85.4**  | **55.1**  | -     | -      | -        | -     |
-| Image Segmentation  | StreetHazards including OOD                | ABNN     | -     | -     | 6.09  | 7.85  | **88.39** | 32.02 | -      | -        | 53.82 |
-| Image Segmentation  | BDD-Anomaly including OOD                  | ABNN     | -     | -     | **14.03** | **5.98**  | **85.74** | 29.01 | -      | -        | 48.76 |
-| Image Segmentation  | MVAD including OOD                          | ABNN     | -     | -     | **5.58**  | 24.37 | **91.55** | **21.68** | -      | -        | **61.96** |
+| Task               | Dataset (also used for backbone training)  | Method   | Acc ↑    | NLL ↓    | ECE ↑     | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam ↓   | Time (h) ↓ | mIoU ↑    |
+|--------------------|--------------------------------------------|----------|----------|----------|-----------|-----------|-----------|-----------|------------|------------|-----------|
+| Image Classification | CIFAR-10 (ResNet-50)                     | ABNN     | **95.4** | 0.215    | **0.845** | **97.0**  | **94.7**  | **15.1**  | 0.16       | **2.0**    | -         |
+| Image Classification | WideResNet-28x10 (CIFAR-10)              | ABNN     | 93.7     | 0.198    | 1.8       | **98.5**  | **96.9**  | **12.6**  | **0.05**   | **5.0**    | -         |
+| Image Classification | CIFAR-100 (ResNet-50)                    | ABNN     | 78.2     | 0.889    | **5.5**   | **89.4**  | **81.1**  | **50.1**  | **0.16**   | **2.0**    | -         |
+| Image Classification | CIFAR-10 (WideResNet-28x10)              | ABNN     | 80.4     | 1.08     | **5.5**   | **85.0**  | **75.0**  | **57.7**  | **0.05**   | **5.0**    | -         |
+| Image Classification | ImageNet (ResNet-50) including OOD       | ABNN     | **79.5** | -        | **9.65**  | 17.8      | **82.0**  | **65.2**  | -          | -          | -         |
+| Image Classification | ImageNet (ViT) including OOD             | ABNN     | 80.6     | -        | **4.32**  | **21.7**  | **85.4**  | **55.1**  | -          | -          | -         |
+| Image Segmentation  | StreetHazards including OOD               | ABNN     | -        | -        | 6.09      | 7.85      | **88.39** | 32.02     | -          | -          | 53.82     |
+| Image Segmentation  | BDD-Anomaly including OOD                 | ABNN     | -        | -        | **14.03** | **5.98**  | **85.74** | 29.01     | -          | -          | 48.76     |
+| Image Segmentation  | MVAD including OOD                        | ABNN     | -        | -        | **5.58**  | 24.37     | **91.55** | **21.68** | -          | -          | **61.96** |
 
 In this table, bolded values shows a result above or equivalent to the past state-of-the-art. For image classification tasks, ABNN was compared with BatchEnsemble, MIMO (ρ = 1), LPBNN, Deep Ensembles, and Laplace models. For image segmentation tasks, ABNN results were compared with TRADI, Deep Ensembles, MIMO, BatchEnsemble, and LP-BNN.
 
