@@ -233,8 +233,21 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 
 ## 3.2. Running the code
+The general structure of this repository is provided below:
+```
+│
+├── ABNN
+│   ├── bnl.py
+│   ├── map.py
+│   ├── test_and_eval.py
+│   ├── train.py
+│   ├── datasets
+│   └── deep_learning_models
+├── Images
+├── notebooks
+└── trained_model
+```
 
-@TODO: Explain your code & directory structure and how other people can run it.
 
 ## 3.3. Results
 
