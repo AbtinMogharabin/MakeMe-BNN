@@ -52,3 +52,40 @@ class CustomMAPLoss(nn.Module):
             log_prob += -0.5 * torch.sum(param ** 2) / (std ** 2)
         return log_prob
 
+
+
+class ABNNLoss(torch.nn.Module):
+    def __init__(self, Num_classes, model_parameters, Weight_decay=1e-4):
+        super(ABNNLoss, self).__init__()
+        self.model_parameters = model_parameters
+        self.Weight_decay = Weight_decay
+        self.eta = nn.Parameter(torch.ones(Num_classes))
+
+    def forward(self, outputs, labels):
+        # Calculate the three loss components
+        nll_loss = self.negative_log_likelihood(outputs, labels)
+        log_prior_loss = self.negative_log_prior(self.model_parameters, self.Weight_decay)
+        custom_ce_loss = self.custom_cross_entropy_loss(outputs, labels, self.eta)
+
+        # Sum up all three components to form the ABNN loss
+        total_loss = nll_loss + log_prior_loss + custom_ce_loss
+        return total_loss
+
+    @staticmethod
+    def negative_log_likelihood(outputs, labels):
+        # Negative Log Likelihood (NLL) or MLE Loss:
+        # NLL = -∑ log P(y_i | x_i, ω)
+        return torch.nn.functional.cross_entropy(outputs, labels)
+
+    def negative_log_prior(self, model_parameters, Weight_decay=1e-4):
+        # Negative Log Prior with Gaussian Prior (L2 Regularization):
+        # log P(ω) = λ ∑ ω^2 where λ (weight decay) = (1/2σ^2)
+        l2_reg = sum(p.pow(2).sum() for p in model_parameters)
+        return Weight_decay * l2_reg
+
+    def custom_cross_entropy_loss(self, outputs, labels, eta):
+        # Custom Cross-Entropy Loss:
+        # E(ω) = -∑ η_i log P(y_i | x_i, ω)
+        log_probs = torch.nn.functional.log_softmax(outputs, dim=1)
+        weighted_log_probs = eta[labels] * log_probs.gather(1, labels.unsqueeze(1)).squeeze(1)
+        return -torch.mean(weighted_log_probs)
