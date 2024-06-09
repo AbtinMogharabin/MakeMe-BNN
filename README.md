@@ -252,6 +252,11 @@ MakeMe-BNN
 
 ## 3.3. Results
 
+### 3.3.1 The original paper's results
+
+The paper tests the ABNN approach on 9 different cases. We organized their results in the following table. In this table, bolded values shows a result above or close to the past state-of-the-art models. For image classification tasks, ABNN was compared with BatchEnsemble, MIMO (ρ = 1), LPBNN, Deep Ensembles, and Laplace models. For image segmentation tasks, the results were compared with TRADI, Deep Ensembles, MIMO, BatchEnsemble, and LP-BNN.
+
+
 | Task               | Dataset (also used for backbone training)  | Method   | Acc ↑    | NLL ↓    | ECE ↑     | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam ↓   | Time (h) ↓ | mIoU ↑    |
 |--------------------|--------------------------------------------|----------|----------|----------|-----------|-----------|-----------|-----------|------------|------------|-----------|
 | Image Classification | CIFAR-10 (ResNet-50)                     | ABNN     | **95.4** | 0.215    | **0.845** | **97.0**  | **94.7**  | **15.1**  | 0.16       | **2.0**    | -         |
@@ -264,7 +269,7 @@ MakeMe-BNN
 | Image Segmentation  | BDD-Anomaly                               | ABNN     | -        | -        | **14.03** | **5.98**  | **85.74** | 29.01     | -          | -          | 48.76     |
 | Image Segmentation  | MVAD                                      | ABNN     | -        | -        | **5.58**  | 24.37     | **91.55** | **21.68** | -          | -          | **61.96** |
 
-In this table, bolded values shows a result above or equivalent to the past state-of-the-art. For image classification tasks, ABNN was compared with BatchEnsemble, MIMO (ρ = 1), LPBNN, Deep Ensembles, and Laplace models. For image segmentation tasks, ABNN results were compared with TRADI, Deep Ensembles, MIMO, BatchEnsemble, and LP-BNN.
+### 3.3.2 Our implementation's results
 
 # 4. Conclusion
 
