@@ -235,6 +235,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 ## 3.2. Running the code
 The general structure of this repository is provided below:
 ```
+MakeMe-BNN
 │
 ├── ABNN
 │   ├── bnl.py
