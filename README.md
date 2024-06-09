@@ -237,7 +237,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 | Image Classification | ImageNet (ResNet-50)          | ABNN     | 79.5  | **9.65**  | **17.8**  | **17.8**  | **82.0**  | **65.2**  | -     | -      | -        | -     |
 | Image Classification | ImageNet (ViT)                | ABNN     | 80.6  | **4.32**  | **21.7**  | **21.7**  | **85.4**  | **55.1**  | -     | -      | -        | -     |
 | Image Segmentation  | StreetHazards                 | ABNN     | -     | -     | **6.09**  | **7.85**  | **88.39** | **32.02** | -      | -        | **53.82** |
-| Image Segmentation  | BDD-Anomaly                   | ABNN     | -     | -     | **14.03** | **5.98**  | **85.74** | **29.01** | -      | -        | **48.76** |
+| Image Segmentation  | BDD-Anomaly                   | ABNN     | -     | -     | **14.03** | <span style="color:darkblue">5.98</span>  | **85.74** | **29.01** | -      | -        | **48.76** |
 | Image Segmentation  | MVAD                           | ABNN     | -     | -     | **5.58**  | **24.37** | **91.55** | **21.68** | -      | -        | **61.96** |
 
 
