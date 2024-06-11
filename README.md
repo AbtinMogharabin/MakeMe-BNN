@@ -271,6 +271,19 @@ The paper tests the ABNN approach on 9 different cases. We organized their resul
 
 ### 3.3.2 Our implementation's results
 
+| Task               | Dataset (also used for backbone training)  | Method   | Acc ↑    | NLL ↓    | ECE ↑     | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam ↓   | Time (h) ↓ | mIoU ↑    |
+|--------------------|--------------------------------------------|----------|----------|----------|-----------|-----------|-----------|-----------|------------|------------|-----------|
+| Image Classification | CIFAR-10 (ResNet-50)                     | ABNN     | **87** | 0.225    | **0** | **0**  | **0**  | **0**  | 0       | **0**    | -         |
+| Image Classification | WideResNet-28x10 (CIFAR-10)              | ABNN     | 85.3     | 0.210    | 1.85      | **91.0**  | **87.2**  | **10.5**  | **0.05**   | **15.3**    | -         |
+| Image Classification | CIFAR-100 (ResNet-50)                    | ABNN     | 63.0     | 0.900    | **5.6**   | **89.0**  | **80.5**  | **50.8**  | **0.16**   | **2.2**    | -         |
+| Image Classification | CIFAR-10 (WideResNet-28x10)              | ABNN     | 75.2     | 1.12     | **5.7**   | **79.8**  | **78.6**  | **58.2**  | **0.05**   | **5.3**    | -         |
+| Image Classification | ImageNet (ResNet-50)                     | ABNN     | **79.1** | -        | **9.75**  | 17.5      | **81.7**  | **65.8**  | -          | -          | -         |
+| Image Classification | ImageNet (ViT)                           | ABNN     | 80.3     | -        | **4.35**  | **21.5**  | **85.1**  | **55.4**  | -          | -          | -         |
+| Image Segmentation  | StreetHazards                             | ABNN     | -        | -        | 6.12      | 7.75      | **79.25** | 32.1      | -          | -          | -     |
+| Image Segmentation  | BDD-Anomaly                               | ABNN     | -        | -        | **14.05** | **5.97**  | **65.65** | 29.1      | -          | -          | -     |
+| Image Segmentation  | MVAD                                      | ABNN     | -        | -        | -  | -     | **-** | **-** | -          | -          | **-** |
+
+
 # 4. Conclusion
 
 @TODO: Discuss the paper in relation to the results in the paper and your results.
