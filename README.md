@@ -39,11 +39,11 @@ The key contributions of this paper are as follows:
 - It is also observed that the variance of other transient ABNN parameters is lower compared to that of a classic BNN, resulting in a more stable backpropagation.
 - Based on my review, this paper demonstrates one of the very few efforts to translate a deterministic model into a Bayesian version after the training of the deterministic model is finished. To name the two most relevant approaches:
   1. **Deterministic Variational Inference Approach:**
-     - One paper employs deterministic variational inference techniques to integrate Bayesian methods into trained deterministic neural networks. It introduces closed-form variance priors for the network weights, allowing the deterministic model to handle uncertainty estimations through a robust Bayesian framework after its initial training [2].
+     - One paper by Wu et al. (2019) employs deterministic variational inference techniques to integrate Bayesian methods into trained deterministic neural networks. It introduces closed-form variance priors for the network weights, allowing the deterministic model to handle uncertainty estimations through a robust Bayesian framework after its initial training [2].
      - Compared to this approach, which requires extensive modifications to the network's inference process to accommodate the new Bayesian priors, the "Make Me a BNN" paper introduces a method that is notably simpler and potentially faster, as it leverages existing normalization layers within pre-trained DNNs to implement Bayesian functionality.
 
   2. **Decoupled Bayesian Stage Approach:**
-     - Another study involves a decoupled Bayesian stage applied to a pre-trained deterministic neural network. This method uses a Bayesian Neural Network to recalibrate the outputs of the deterministic model, thereby improving its predictive uncertainty without retraining the entire network from scratch [3].
+     - Another study by Maronas et al. (2020) involves a decoupled Bayesian stage applied to a pre-trained deterministic neural network. This method uses a Bayesian Neural Network to recalibrate the outputs of the deterministic model, thereby improving its predictive uncertainty without retraining the entire network from scratch [3].
      - "Make Me a BNN" paper introduces a quick deployment and straightforward integration into existing models by attaching simple adaptable Bayesian modules directly to the normalization layers. But effective calibration improvement involves adding an entirely new Bayesian processing layer, might not be the most efficient way to introduce Bayesian uncertainty into existing models.
 
 
@@ -140,7 +140,17 @@ Where:
 
 ## 2.2. Our interpretation 
 
-@TODO: Explain the parts that were not clearly explained in the original paper and how you interpreted them.
+In this project, after preparng the pre-trained weights of each model according to the instructions (some needed to be trained by us and some were available in torchvision), we focused on implementing two main components: 1. the custom MAP-based loss function, and 2. the Bayesian Normalization Layer (BNL). Some parts were not clearly explained in the original paper and we made our own interpretions for them:
+
+### 2.2.1 Challenges with Bayesian Normalization Layer 
+The paper provided a broad description of BNL, stating it could automatically replace any traditional normalization layer and initialize using the trained values from of previous models' parameters. In practice, implementing BNL layer so that it could replace all 3 types of batch, layer, and instance normalization layers with a single implementtion was challenging. There were multiple problems to be dealth with because each of these normalization have many differences in their input handling and in their structure and parameters. 
+1. One problem was that layer normalization sometimes receives a list of input dimensions to adapt its functionality to different tensor shapes, instead of receiving only an integer input like batch and instance normalization. Because of this, we had to define a separate handling case for BNL when dealing with list inputs and reshaped the input to fit the model accordingly.
+2. In addition, different normalization layers have some differences in their learned parameters. For example, in addition to `weight` and `bias` parameters, batch normalization also contains `running_mean`, `running_var`, and `num_batches_tracked` parameters when it is trained. When we were supposed to transfer the weights from a trained model to a new ABNN version (the same model with BNL layers), we weren't sure how to deal with such differences between different normalization layers. Because of this, the best approach we could think of was to remove all trained values from parameters other than `weight` and `bias`. Then, we initialized the BNL layers with only `weight` and `bias` trained values. For this, we defined our BNL layer such that the paper's $\gamma_j$ and $\beta_j$ notations were taken as `weight` and `bias` parameters respectively.
+3. Another problem was that each normalization layer usually has multiple versions depending on the input shape (for example, we use BatchNorm1d and BatchNorm2d for dealing with flattened feature vectors and 2d convolutional layer outputs). To deal with this issue, our solution was to define two different cases for our BNL definition: 2D input and 4D input cases. This assures that our BNL layer is robust to both 2D inputs (common for in fully connected layers. The two dimensions are [batch size, features]) and 4D inputs (Used for image batch convlutions. The four dimensions are [batch size, channels, height, width]), which were commonly used in our models.
+
+
+### 2.2.1 Challenges with Custom MAP-Based Loss Function
+- There was also the issue of handling the loss terms. Our loss consisted of three sections, and we implemented each case suitably. A small issue was with the negative log prior term because they didn't provide any formulas for it and they only mentioned that this loss was supposed to use a Gaussian prior over weights and that this loss was equivalent to L2 regularization. For this loss term, we first simplified the logarithm of the Gaussian distribution and removed the unnecessary constant terms. Then we implemented the formula as *logP(ω) = λ ∑ω^2* where *λ (weight decay) = 1/2σ^2*. In other words, variance is the main parameter to train. This also allowes for each extraction of weights' variance after the training.
 
 # 3. Experiments and results
 
@@ -152,7 +162,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 ### 3.1.1.1  Image Classification
 
-1. **[CIFAR-10 and CIFAR-100 ](https://www.cs.toronto.edu/~kriz/cifar.html)** [5]:
+1. Krizhevsky et al. (2009): **[CIFAR-10 and CIFAR-100 ](https://www.cs.toronto.edu/~kriz/cifar.html)**  [5]:
    - **CIFAR-10**: CIFAR-10 contains 60,000 images divided into 10 classes. The images are colored, with a resolution of 32x32 pixels. The 10 classes in CIFAR-10 are airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck. It contains 50,000 training images and 10,000 test images
    - **CIFAR-100**: This dataset contains 60,000 images across 100 classes, with 600 images per class. Like CIFAR-10, these are 32x32 pixel color images. The 100 classes are grouped into 20 superclasses, with each superclass containing five related classes. There are 50,000 training images and 10,000 test images, distributed equally across the 100 classes.
    - **Usage**: In the paper, this dataset was used to evaluate image classification tasks with ResNet-50 and WideResNet-28x10 backbones. They did the training from scratch but pre-trained models would have similar results.
@@ -163,7 +173,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
     <p id="CIFAR-10">Figure 4: Sample images from the CIFAR-10 dataset </p>  
 </div>
   
-2. **[Street View House Numbers (SVHN) ](http://ufldl.stanford.edu/housenumbers/)** [7]:
+2. Netzer et al. (2011): **[Street View House Numbers (SVHN) ](http://ufldl.stanford.edu/housenumbers/)** [7]:
    - **Description**:  SVHN is a real-world image dataset obtained from house numbers in Google Street View images. Images in SVHN, like CIFAR, are small, often 32x32 pixels. This dataset contains over 600,000 images.
    - **Usage**: The paper used this dataset as the out-of-distribution dataset for models trained on CIFAR-10/100 to test their generalization and uncertainty estimation. 
    - **Results**: The paper didn't share the specific performance metrics on this dataset.
@@ -173,7 +183,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
     <p id="SVHN">Figure 5: Sample images from the SVHN dataset in full numbers format </p>     
 </div>
 
-3. **[ImageNet ](https://www.image-net.org/download.php)** [6]:
+3. Deng et al. (2009): **[ImageNet ](https://www.image-net.org/download.php)** [6]:
    - **Description**: It has 1,000 classes, each with varying numbers of images, but generally several hundred to a few thousand images per class. The classes represent a broad range of objects on everyday items and the training set contains approximately 1.2 million images, while the test set has about 50,000 images. The dimensions are typically resized to 224x224 pixels for model training.
    - **Usage**: In the paper, ResNet-50 and Vision Transformer (ViT) were used for experiments on ImageNet for image classification tasks. For these backbones, they used torchvision pre-trained models.
    - **Results**: ABNN demonstrated an accuracy of 79.5% with ResNet-50 and 80.6% with ViT. For ViT, their approach achieved better FPR95 and ECE compared to other models.
@@ -183,7 +193,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
     <p id="ImageNet">Figure 6: Sample images from the ImageNet dataset </p>     
 </div>
 
-4. **[Describable Textures Dataset (DTD) ](https://www.robots.ox.ac.uk/~vgg/data/dtd/)** [8]:
+4. Cimpoi et al. (2014): **[Describable Textures Dataset (DTD) ](https://www.robots.ox.ac.uk/~vgg/data/dtd/)** [8]:
    - **Description**:  DTD is a dataset of textural images organized according to a list of 47 terms (categories) inspired by human perception. There are a total of 5,640 images. The data is typically processed to fit the input size (224x224 pixels) requirements of the ImageNet model. This dataset contains over 600,000 images.
    - **Usage**: The paper used this dataset as the out-of-distribution dataset for models trained on ImageNet-trained models. 
    - **Results**: Specific performance metrics were not shared in the paper.
@@ -196,9 +206,9 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 ### 3.1.1.2  Semantic Segmentation
 
-1. **[StreetHazards ](https://github.com/hendrycks/anomaly-seg)** [9]:
+1. Hendrycks et al. (2019): **[StreetHazards ](https://github.com/hendrycks/anomaly-seg)** [9]:
    - **Description**: This dataset is a part of the larger BDD100K dataset, explicitly designed for benchmarking anomaly detection in the context of street scenes for 13 classes.  The classes represent various street elements. In total, there are 5,125 training images and 1,500 test images of around 512x256 pixels. The test set also contains an additional 250 out-of-distribution classes. 
-   - **Usage**: This dataset is designed for semantic segmentation tasks. The paper employed DeepLabv3+ with a ResNet-50 encoder as a backbone, as introduced by Chen et al. [4].
+   - **Usage**: This dataset is designed for semantic segmentation tasks. The paper employed DeepLabv3+ with a ResNet-50 encoder as a backbone, as introduced by Chen et al. (2018) [4].
    - **Results**: In semantic segmentation tasks, ABNN achieved a small improvement in AUC compared to other models.
 
 <div align="center">
@@ -206,13 +216,13 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
     <p id="StreetHazards">Figure 8: Sample images from the StreetHazards dataset</p>     
 </div>
 
-2. **[BDD-Anomaly ](https://github.com/daniel-bogdoll/anomaly_datasets/blob/main/datasets/bdd-anomaly.py)** [10]:
+2. Yu et al. (2020): **[BDD-Anomaly ](https://github.com/daniel-bogdoll/anomaly_datasets/blob/main/datasets/bdd-anomaly.py)** [10]:
    - **Description**: A challenging real-world dataset for street scene segmentation that includes diverse conditions such as weather and nighttime scenes. BDD-Anomaly is a subset of the BDD100K dataset, focusing on street scenes with 17 distinct classes in the training set. The test set also introduces two additional out-of-distribution (OOD) classes, namely motorcycle and train.
    - **Usage**: The paper employed the ResNet-50 encoder as a backbone and evaluated the results for semantic segmentation.
    - **Results**: For semantic segmentation, ABNN successfully increased the AUPR and AUC compared to the past state-of-the-art. ECE was also decreased successfully.
 
-3. **[MUAD](https://muad-dataset.github.io/)** [11]:
-   - **Description**: MUAD is a synthetic dataset for autonomous driving with multiple uncertainty types and tasks. It contains 10413 in total: 3420 images in the train set, 492 in the validation set and 6501 in the test set. There are a total of 21 classes: 19 classes taken from the CityScapes dataset [12] and two OOD classes representing object anomalies and animals. All these sets cover both day and night conditions.
+3. Franchi et al. (2022): **[MUAD](https://muad-dataset.github.io/)** [11]:
+   - **Description**: MUAD is a synthetic dataset for autonomous driving with multiple uncertainty types and tasks. It contains 10413 in total: 3420 images in the train set, 492 in the validation set and 6501 in the test set. There are a total of 21 classes: 19 classes taken from the CityScapes dataset by Cordts et al. (2016) [12] and two OOD classes representing object anomalies and animals. All these sets cover both day and night conditions.
    - **Usage**: The paper employed this dataset for semantic segmentation tasks focusing on both normal and out-of-distribution scenarios. In the study, a DeepLabV3+ with a ResNet50 encoder was used for the backbone.
    - **Results**: ABNN showed impressive results, achieving a significant increase in mean IoU and AUC, while significantly lowering FPR95 and ECE.
 
@@ -223,12 +233,43 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 
 ## 3.2. Running the code
+The general structure of this repository is provided below:
+```
+MakeMe-BNN
+│
+├── ABNN
+│   ├── bnl.py
+│   ├── map.py
+│   ├── test_and_eval.py
+│   ├── train.py
+│   ├── datasets
+│   └── deep_learning_models
+├── Images
+├── notebooks
+└── trained_model
+```
 
-@TODO: Explain your code & directory structure and how other people can run it.
 
 ## 3.3. Results
 
-@TODO: Present your results and compare them to the original paper. Please number your figures & tables as if this is a paper.
+### 3.3.1 The original paper's results
+
+The paper tests the ABNN approach on 9 different cases. We organized their results in the following table. In this table, bolded values shows a result above or close to the past state-of-the-art models. For image classification tasks, ABNN was compared with BatchEnsemble, MIMO (ρ = 1), LPBNN, Deep Ensembles, and Laplace models. For image segmentation tasks, the results were compared with TRADI, Deep Ensembles, MIMO, BatchEnsemble, and LP-BNN.
+
+
+| Task               | Dataset (also used for backbone training)  | Method   | Acc ↑    | NLL ↓    | ECE ↑     | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam ↓   | Time (h) ↓ | mIoU ↑    |
+|--------------------|--------------------------------------------|----------|----------|----------|-----------|-----------|-----------|-----------|------------|------------|-----------|
+| Image Classification | CIFAR-10 (ResNet-50)                     | ABNN     | **95.4** | 0.215    | **0.845** | **97.0**  | **94.7**  | **15.1**  | 0.16       | **2.0**    | -         |
+| Image Classification | WideResNet-28x10 (CIFAR-10)              | ABNN     | 93.7     | 0.198    | 1.8       | **98.5**  | **96.9**  | **12.6**  | **0.05**   | **5.0**    | -         |
+| Image Classification | CIFAR-100 (ResNet-50)                    | ABNN     | 78.2     | 0.889    | **5.5**   | **89.4**  | **81.1**  | **50.1**  | **0.16**   | **2.0**    | -         |
+| Image Classification | CIFAR-10 (WideResNet-28x10)              | ABNN     | 80.4     | 1.08     | **5.5**   | **85.0**  | **75.0**  | **57.7**  | **0.05**   | **5.0**    | -         |
+| Image Classification | ImageNet (ResNet-50)                     | ABNN     | **79.5** | -        | **9.65**  | 17.8      | **82.0**  | **65.2**  | -          | -          | -         |
+| Image Classification | ImageNet (ViT)                           | ABNN     | 80.6     | -        | **4.32**  | **21.7**  | **85.4**  | **55.1**  | -          | -          | -         |
+| Image Segmentation  | StreetHazards                             | ABNN     | -        | -        | 6.09      | 7.85      | **88.39** | 32.02     | -          | -          | 53.82     |
+| Image Segmentation  | BDD-Anomaly                               | ABNN     | -        | -        | **14.03** | **5.98**  | **85.74** | 29.01     | -          | -          | 48.76     |
+| Image Segmentation  | MVAD                                      | ABNN     | -        | -        | **5.58**  | 24.37     | **91.55** | **21.68** | -          | -          | **61.96** |
+
+### 3.3.2 Our implementation's results
 
 # 4. Conclusion
 
