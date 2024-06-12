@@ -148,6 +148,7 @@ The paper provided a broad description of BNL, stating it could automatically re
 2. In addition, different normalization layers have some differences in their learned parameters. For example, in addition to `weight` and `bias` parameters, batch normalization also contains `running_mean`, `running_var`, and `num_batches_tracked` parameters when it is trained. When we were supposed to transfer the weights from a trained model to a new ABNN version (the same model with BNL layers), we weren't sure how to deal with such differences between different normalization layers. Because of this, the best approach we could think of was to remove all trained values from parameters other than `weight` and `bias`. Then, we initialized the BNL layers with only `weight` and `bias` trained values. For this, we defined our BNL layer such that the paper's $\gamma_j$ and $\beta_j$ notations were taken as `weight` and `bias` parameters respectively.
 3. Another problem was that each normalization layer usually has multiple versions depending on the input shape (for example, we use BatchNorm1d and BatchNorm2d for dealing with flattened feature vectors and 2d convolutional layer outputs). To deal with this issue, our solution was to define two different cases for our BNL definition: 2D input and 4D input cases. This assures that our BNL layer is robust to both 2D inputs (common for in fully connected layers. The two dimensions are [batch size, features]) and 4D inputs (Used for image batch convlutions. The four dimensions are [batch size, channels, height, width]), which were commonly used in our models.
 
+The biggest challenge was with the weight initialization. Unfortunately, we weren't able to completely solve this problem. When we applied the above method to initialize the wights, there was a sudden loss of intormation with around 20-30% decrease in the accuracy. The problem should be with our interprettion. In the end, to deal with the issue of problematic weight initialization, we had to unfreeze some of the parameters other than the normalization weights and we had to continue training for 50~100 epoch for most cases instead of the epoch number mentioned in the paper.
 
 ### 2.2.1 Challenges with Custom MAP-Based Loss Function
 - There was also the issue of handling the loss terms. Our loss consisted of three sections, and we implemented each case suitably. A small issue was with the negative log prior term because they didn't provide any formulas for it and they only mentioned that this loss was supposed to use a Gaussian prior over weights and that this loss was equivalent to L2 regularization. For this loss term, we first simplified the logarithm of the Gaussian distribution and removed the unnecessary constant terms. Then we implemented the formula as *logP(ω) = λ ∑ω^2* where *λ (weight decay) = 1/2σ^2*. In other words, variance is the main parameter to train. This also allowes for each extraction of weights' variance after the training.
@@ -246,37 +247,16 @@ MakeMe-BNN
 │   └── deep_learning_models
 ├── Images
 ├── notebooks
-└── trained_model
+├── sample_usage.ipynb
+└── trained_model  -- because of the large size of this folder, we only had time to upload this in our original repo and not in the CENG502 repository
 ```
 
-To run the code, follow these steps:
+To run the models, first you need to import you dataset nd model of interest from `ABNN.datasets` and `ABNN.deep_learning_models`. Then, you can easily run the models using the custom functions available in `ABNN/train.py` and `ABNN/test_and_eval.py`. You can modify the model, dataset, training parameters, and evaluation metrics as needed by editing the respective cells and replacing them with your own custom ABNN version of interest. 
 
-you can find all_codes.ipynb which include all the steps with detiled information. 
+We also share multiple pretrained weights for our different experiments in our repository [here](https://github.com/AbtinMogharabin/MakeMe-BNN).
 
-### 1. Set up the environment:
-- Ensure you have Python installed (preferably Python 3.10).
-- Install the required packages. 
+For easy access, we provide a notebook with sample codes to reproduce our results. After cloning our repo, all you need to do is to open `sample_usage.ipynb` which include all the steps with detiled information. Then run the codes sequentially. If you want to experiment with ABNN with faster and less expensive models, we also provide a simple ABNN demo on a light CNN classifier model available in `notebooks/Simple CNN Demo`. 
 
-
-### 2. Run the cells sequentially:
-- Start by running the cell to install missing packages.
-- Execute the cell to import libraries.
-- Import custom libraries to set up the paths and custom modules.
-- Set the device usage to ensure GPU (if available) is utilized.
-- Load and preprocess datasets (CIFAR-10, CIFAR-100, and SVHN etc).
-- Define and initialize the model (e.g., ResNet50).
-- Define the training and testing loops.
-- Train the model on the chosen dataset.
-- Evaluate the model using the defined metrics.
-
-### 3. Training and Evaluation:
-- Follow the provided training loop to train the model.
-- Use the testing loop to evaluate the model's performance and obtain metrics.
-
-### 4. Customization:
-- You can modify the model, dataset, training parameters, and evaluation metrics as needed by editing the respective cells.
-
-By following these steps, you should be able to run the notebook and experiment with the Bayesian Neural Network (BNN) implementation effectively.
 
 ## 3.3. Results
 
@@ -287,34 +267,52 @@ The paper tests the ABNN approach on 9 different cases. We organized their resul
 
 | Task               | Dataset (also used for backbone training)  | Method   | Acc ↑    | NLL ↓    | ECE ↑     | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam ↓   | Time (h) ↓ | mIoU ↑    |
 |--------------------|--------------------------------------------|----------|----------|----------|-----------|-----------|-----------|-----------|------------|------------|-----------|
-| Image Classification | CIFAR-10 (ResNet-50)                     | ABNN     | **95.4** | 0.215    | **0.845** | **97.0**  | **94.7**  | **15.1**  | 0.16       | **2.0**    | -         |
-| Image Classification | WideResNet-28x10 (CIFAR-10)              | ABNN     | 93.7     | 0.198    | 1.8       | **98.5**  | **96.9**  | **12.6**  | **0.05**   | **5.0**    | -         |
-| Image Classification | CIFAR-100 (ResNet-50)                    | ABNN     | 78.2     | 0.889    | **5.5**   | **89.4**  | **81.1**  | **50.1**  | **0.16**   | **2.0**    | -         |
-| Image Classification | CIFAR-10 (WideResNet-28x10)              | ABNN     | 80.4     | 1.08     | **5.5**   | **85.0**  | **75.0**  | **57.7**  | **0.05**   | **5.0**    | -         |
-| Image Classification | ImageNet (ResNet-50)                     | ABNN     | **79.5** | -        | **9.65**  | 17.8      | **82.0**  | **65.2**  | -          | -          | -         |
-| Image Classification | ImageNet (ViT)                           | ABNN     | 80.6     | -        | **4.32**  | **21.7**  | **85.4**  | **55.1**  | -          | -          | -         |
-| Image Segmentation  | StreetHazards                             | ABNN     | -        | -        | 6.09      | 7.85      | **88.39** | 32.02     | -          | -          | 53.82     |
-| Image Segmentation  | BDD-Anomaly                               | ABNN     | -        | -        | **14.03** | **5.98**  | **85.74** | 29.01     | -          | -          | 48.76     |
-| Image Segmentation  | MVAD                                      | ABNN     | -        | -        | **5.58**  | 24.37     | **91.55** | **21.68** | -          | -          | **61.96** |
+| Image Classification | CIFAR-10                                 | ABNN on ResNet-50     | **95.4** | 0.215    | **0.845** | **97.0**  | **94.7**  | **15.1**  | 0.16       | **2.0**    | -         |
+| Image Classification | WideResNet-28x10                         | ABNN on WideResNet-28x10     | 93.7     | 0.198    | 1.8       | **98.5**  | **96.9**  | **12.6**  | **0.05**   | **5.0**    | -         |
+| Image Classification | CIFAR-100                                | ABNN on ResNet-50    | 78.2     | 0.889    | **5.5**   | **89.4**  | **81.1**  | **50.1**  | **0.16**   | **2.0**    | -         |
+| Image Classification | CIFAR-10                                 | ABNN on WideResNet-28x10   | 80.4     | 1.08     | **5.5**   | **85.0**  | **75.0**  | **57.7**  | **0.05**   | **5.0**    | -         |
+| Image Classification | ImageNet                                 | ABNN on ResNet-50    | **79.5** | -        | **9.65**  | 17.8      | **82.0**  | **65.2**  | -          | -          | -         |
+| Image Classification | ImageNet                                 | ABNN on ViT    | 80.6     | -        | **4.32**  | **21.7**  | **85.4**  | **55.1**  | -          | -          | -         |
+| Image Segmentation  | StreetHazards                             | ABNN on DeepLabv3+     | -        | -        | 6.09      | 7.85      | **88.39** | 32.02     | -          | -          | 53.82     |
+| Image Segmentation  | BDD-Anomaly                               | ABNN on DeepLabv3+     | -        | -        | **14.03** | **5.98**  | **85.74** | 29.01     | -          | -          | 48.76     |
+| Image Segmentation  | MVAD                                      | ABNN on DeepLabv3+     | -        | -        | **5.58**  | 24.37     | **91.55** | **21.68** | -          | -          | **61.96** |
 
 ### 3.3.2 Our implementation's results
 
-| Task               | Dataset (also used for backbone training)  | Method   | Acc ↑    | NLL ↓    | ECE ↑     | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam ↓   | Time (h) ↓ | mIoU ↑    |
-|--------------------|--------------------------------------------|----------|----------|----------|-----------|-----------|-----------|-----------|------------|------------|-----------|
-| Image Classification | CIFAR-10 (ResNet-50)                     | ABNN     | **87** | 0.225    | **0** | **0**  | **0**  | **0**  | 0       | **0**    | -         |
-| Image Classification | WideResNet-28x10 (CIFAR-10)              | ABNN     | 85.3     | 0.210    | 1.85      | **91.0**  | **87.2**  | **10.5**  | **0.05**   | **15.3**    | -         |
-| Image Classification | CIFAR-100 (ResNet-50)                    | ABNN     | 63.0     | 0.900    | **5.6**   | **89.0**  | **80.5**  | **50.8**  | **0.16**   | **2.2**    | -         |
-| Image Classification | CIFAR-10 (WideResNet-28x10)              | ABNN     | 75.2     | 1.12     | **5.7**   | **79.8**  | **78.6**  | **58.2**  | **0.05**   | **5.3**    | -         |
-| Image Classification | ImageNet (ResNet-50)                     | ABNN     | - | -        | -  | -      | -  | -  | -          | -          | -         |
-| Image Classification | ImageNet (ViT)                           | ABNN     | -     | -        | -  | -  | -  | -  | -          | -          | -         |
-| Image Segmentation  | StreetHazards                             | ABNN     | -        | -        | 6.12      | 7.75      | **79.25** | 32.1      | -          | -          | -     |
-| Image Segmentation  | BDD-Anomaly                               | ABNN     | -        | -        | **14.05** | **5.97**  | **65.65** | 29.1      | -          | -          | -     |
-| Image Segmentation  | MVAD                                      | ABNN     | -        | -        | -  | -     | **-** | **-** | -          | -          | **-** |
+The following table includes the results of our ABNN versions. The main difference of our model and the paper is that when running the codes, we had to unfreeze some extra parameters and ran the model for more epochs than reported in the paper. This was most likely due to our problem with the weight initialization because without unfreezing the weights of other layers our models had over 20-30% lower performance in almost all metrics. Similar to the paper, we trained ResNet-50 and WideResNet-28x10 from scratch for 200 epochs (following the reported parameters in the paper). For ViT and DeepLabv3+, we used publicly available pretrained models.
 
+
+| Task               | Dataset (also used for backbone training)  | Method   | Acc ↑  | NLL ↓  | ECE ↑  | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam (if only normalization weights were used) ↓   | Time (h) ↓ | mIoU ↑    |
+|--------------------|--------------------------------------------|----------|-------|--------|---------|-----------|-----------|-----------|------------|------------|-----------|
+| Image Classification | CIFAR-10 (ResNet-50)                     | ABNN     | 87.11 | 0.245  | 0.60    | 80.90     | 93.17     | 16.18  | 0.16    | -    | -         |
+| Image Classification | WideResNet-28x10 (CIFAR-10)              | ABNN     | 85.30 | 0.250  | 1.85    | 89.00     | 87.20     | 10.50  | 0.05   | -    | -         |
+| Image Classification | CIFAR-100 (ResNet-50)                    | ABNN     | 63.0  | 1.00  | 4.6     | 87.0      | 80.5      | 50.8  | 0.16   | -    | -         |
+| Image Classification | CIFAR-10 (WideResNet-28x10)              | ABNN     | 75.2  | 1.32   | 4.7     | 76.8      | 78.6      | 58.2  | 0.05   | -    | -         |
+| Image Classification | ImageNet (ResNet-50)                     | ABNN     | -        | -        | -  | -      | -  | -  | -          | -          | -         |
+| Image Classification | ImageNet (ViT)                           | ABNN     | -        | -        | -  | -  | -  | -  | -          | -          | -         |
+| Image Segmentation  | StreetHazards                             | ABNN     | -        | -        | 6.12      | 7.75      | 29.25 | 32.1      | -          | -          | 50.1     |
+| Image Segmentation  | BDD-Anomaly                               | ABNN     | -        | -        | 14.05 | 5.97  | 72.65 | 29.1      | -          | -          | 46.2     |
+| Image Segmentation  | MVAD                                      | ABNN     | -        | -        | -  | -     | - | - | -          | -          | - |
+
+
+
+We can observe that our ABNN models on ResNet-50 and WideResNet-28x10 generally show lower performance compared to the results presented in the paper, although we occasionally achieve similar or better results, particularly for FPR95. Conversely, for the segmentation models, our results closely match those in the paper.
+
+A key reason for this difference could be the varying backbones used. For image segmentation tasks, we used publicly available backbones similar to those used in the paper, ensuring that we trained the model with the same weight initialization. However, for ResNet-50 and WideResNet-28x10 models, the paper's authors trained the models themselves and did not share the code or provide details about the performance of these pretrained models. They only mentioned that after training these models, they converted them into ABNN versions and continued training.
+
+Overall, since the paper did not claim that ABNN causes significant performance improvements on pretrained models, it seems logical to assume that ABNN's key property is uncertainty estimation rather than substantial performance enhancements. For example, the paper reported a 95.4% accuracy for ResNet-50 on CIFAR10. It is reasonable to assume their pretrained ResNet-50 model had an accuracy of around 95-96%. In our case, our pretrained ResNet-50 model on CIFAR10 only achieved about 90% accuracy. Therefore,  we believe it makes sense that the ABNN version did not show a sudden 6% improvement and remained around 90%.
+
+We believe that in addition to problematic normalization weights, the issue with pretrained weights could be another key factor behind the lower performance of our ABNN classification models. The fact that our segmentation models show results close to the paper supports this explanation. However, we still observe that our segmentation models show a significantly lower AUC compared to the paper.
+
+Unfortunately, due to time contraints, we weren't able to train our models on ImageNet and MVAD datasets and experiment with our implementation further.
+
+We didn't report the time consumption because we traine dour models on a different device compared to the paper and we also had to unfreeze some extra parameters which made comparing the results difficult.
 
 # 4. Conclusion
 
-@TODO: Discuss the paper in relation to the results in the paper and your results.
+In this project, we attempted to replicate the results of "Make Me a BNN: A Simple Strategy for Estimating Bayesian Uncertainty from Pre-trained Models" from CVPR 2024. We observed that our models generally exhibited lower performance compared to the results reported in the paper. This discrepancy was particularly evident in the results of our image classification models. We believe these differences stem from issues with the weight initialization of normalization layers and the fact that we did not have access to the exact pretrained models used in the paper. Because, based on our underestanding of the paper, ABNN was not supposed to cause dramatic performance improvements in a pretrained model and its primary benefit is uncertainty estimation. We also share the pretrained weights of our models in the original repo [here](https://github.com/AbtinMogharabin/MakeMe-BNN).
+
+Overall, we implemented two key aspects of ABNN: the BNL layer and the custom loss function. The ABNN approach enhances the uncertainty quantification abilities of pretrained models, making it both computationally efficient and highly useful given the abundance of large, publicly available deterministic DNN pretrained models in the current literature.
 
 # 5. References
 
