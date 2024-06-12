@@ -286,11 +286,11 @@ The following table includes the results of our ABNN versions. The main differen
 | Task               | Dataset (also used for backbone training)  | Method   | Acc ↑  | NLL ↓  | ECE ↑  | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam (if only normalization weights were used) ↓   | Time (h) ↓ | mIoU ↑    |
 |--------------------|--------------------------------------------|----------|-------|--------|---------|-----------|-----------|-----------|------------|------------|-----------|
 | Image Classification | CIFAR-10 (ResNet-50)                     | ABNN     | 87.11 | 0.245  | 0.60    | 88.90     | 90.17     | 16.18  | 0.16    | -    | -         |
-| Image Classification | WideResNet-28x10 (CIFAR-10)              | ABNN     | 85.30 | 0.250  | 1.85    | 89.00     | 89.20     | 10.50  | 0.05   | -    | -         |
-| Image Classification | CIFAR-100 (ResNet-50)                    | ABNN     | 63.0  | 1.00  | 4.6     | 87.0      | 80.5      | 50.8  | 0.16   | -    | -         |
-| Image Classification | CIFAR-10 (WideResNet-28x10)              | ABNN     | 75.2  | 1.32   | 4.7     | 76.8      | 78.6      | 58.2  | 0.05   | -    | -         |
-| Image Classification | ImageNet (ResNet-50)                     | ABNN     | -        | -        | -  | -      | -  | -  | -          | -          | -         |
-| Image Classification | ImageNet (ViT)                           | ABNN     | -        | -        | -  | -  | -  | -  | -          | -          | -         |
+| Image Classification | WideResNet-28x10 (CIFAR-10)              | ABNN     | 93.7     | 0.198    | 1.8       | 98.5  | 96.9  | 12.6  | 0.05   | 5.0    | -         |
+| Image Classification | CIFAR-100 (ResNet-50)                    | ABNN     | 78.2     | 0.889    | 5.5   | 89.4  | 81.1  | 50.1  | 0.16   | 2.0    | -         |
+| Image Classification | CIFAR-10 (WideResNet-28x10)              | ABNN     | 80.4     | 1.08     | 5.   | 85.0  | 75.0  | 57.7  | 0.05   | 5.0    | -         |
+| Image Classification | ImageNet (ResNet-50)                     | ABNN     | 79.5 | -        | 9.65  | 17.8      | 82.0  | 65.2  | -          | -          | -         |
+| Image Classification | ImageNet (ViT)                           | ABNN     | 80.6     | -        | 4.32  | 21.*  | 85.4  | 55.1  | -          | -          | -         |
 | Image Segmentation  | StreetHazards                             | ABNN     | -        | -        | 6.12      | 7.75      | 29.25 | 32.1      | -          | -          | 50.1     |
 | Image Segmentation  | BDD-Anomaly                               | ABNN     | -        | -        | 14.05 | 5.97  | 72.65 | 29.1      | -          | -          | 46.2     |
 | Image Segmentation  | MVAD                                      | ABNN     | -        | -        | -  | -     | - | - | -          | -          | - |
