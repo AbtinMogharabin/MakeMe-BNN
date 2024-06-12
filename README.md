@@ -284,8 +284,8 @@ The following table includes the results of our ABNN versions. The main differen
 
 | Task               | Dataset (also used for backbone training)  | Method   | Acc ↑  | NLL ↓  | ECE ↑  | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam (if only normalization weights were used) ↓   | Time (h) ↓ | mIoU ↑    |
 |--------------------|--------------------------------------------|----------|-------|--------|---------|-----------|-----------|-----------|------------|------------|-----------|
-| Image Classification | CIFAR-10 (ResNet-50)                     | ABNN     | 87.11 | 0.245  | 0.60    | 80.90     | 93.17     | 16.18  | 0.16    | -    | -         |
-| Image Classification | WideResNet-28x10 (CIFAR-10)              | ABNN     | 85.30 | 0.250  | 1.85    | 89.00     | 87.20     | 10.50  | 0.05   | -    | -         |
+| Image Classification | CIFAR-10 (ResNet-50)                     | ABNN     | 87.11 | 0.245  | 0.60    | 88.90     | 90.17     | 16.18  | 0.16    | -    | -         |
+| Image Classification | WideResNet-28x10 (CIFAR-10)              | ABNN     | 85.30 | 0.250  | 1.85    | 89.00     | 89.20     | 10.50  | 0.05   | -    | -         |
 | Image Classification | CIFAR-100 (ResNet-50)                    | ABNN     | 63.0  | 1.00  | 4.6     | 87.0      | 80.5      | 50.8  | 0.16   | -    | -         |
 | Image Classification | CIFAR-10 (WideResNet-28x10)              | ABNN     | 75.2  | 1.32   | 4.7     | 76.8      | 78.6      | 58.2  | 0.05   | -    | -         |
 | Image Classification | ImageNet (ResNet-50)                     | ABNN     | -        | -        | -  | -      | -  | -  | -          | -          | -         |
