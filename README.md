@@ -279,7 +279,8 @@ The paper tests the ABNN approach on 9 different cases. We organized their resul
 
 ### 3.3.2 Our implementation's results
 
-The following table includes the results of our ABNN versions. The main difference of our model and the paper is that when running the codes, we had to unfreeze some extra parameters and ran the model for more epochs than reported in the paper. This was most likely due to our problem with the weight initialization because without unfreezing the weights of other layers our models had over 20-30% lower performance in almost all metrics. Similar to the paper, we trained ResNet-50 and WideResNet-28x10 from scratch for 200 epochs (following the reported parameters in the paper). For ViT and DeepLabv3+, we used publicly available pretrained models.
+The following table includes the results of our ABNN versions. The main difference of our model and the paper is that when running the codes, we had to unfreeze some extra parameters and ran the model for more epochs than reported in the paper. This was most likely due to our problem with the weight initialization because without unfreezing the weights of other layers our models had over 20-30% lower performance in almost all metrics. Similar to the paper, we trained ResNet-50 and WideResNet-28x10 from scratch for 200 epochs (following the reported parameters in the paper). For ViT and DeepLabv3+, we used publicly available pretrained models. Unfortunately, due to time contraints, we weren't able to train our model on ImageNet and MVAD datasets and we only report 6 models.
+
 
 
 | Task               | Dataset (also used for backbone training)  | Method   | Acc ↑  | NLL ↓  | ECE ↑  | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam (if only normalization weights were used) ↓   | Time (h) ↓ | mIoU ↑    |
@@ -303,8 +304,6 @@ A key reason for this difference could be the varying backbones used. For image 
 Overall, since the paper did not claim that ABNN causes significant performance improvements on pretrained models, it seems logical to assume that ABNN's key property is uncertainty estimation rather than substantial performance enhancements. For example, the paper reported a 95.4% accuracy for ResNet-50 on CIFAR10. It is reasonable to assume their pretrained ResNet-50 model had an accuracy of around 95-96%. In our case, our pretrained ResNet-50 model on CIFAR10 only achieved about 90% accuracy. Therefore,  we believe it makes sense that the ABNN version did not show a sudden 6% improvement and remained around 90%.
 
 We believe that in addition to problematic normalization weights, the issue with pretrained weights could be another key factor behind the lower performance of our ABNN classification models. The fact that our segmentation models show results close to the paper supports this explanation. However, we still observe that our segmentation models show a significantly lower AUC compared to the paper.
-
-Unfortunately, due to time contraints, we weren't able to train our models on ImageNet and MVAD datasets and experiment with our implementation further.
 
 We didn't report the time consumption because we traine dour models on a different device compared to the paper and we also had to unfreeze some extra parameters which made comparing the results difficult.
 
