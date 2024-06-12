@@ -249,6 +249,34 @@ MakeMe-BNN
 └── trained_model
 ```
 
+To run the code, follow these steps:
+
+you can find all_codes.ipynb which include all the steps with detiled information. 
+
+### 1. Set up the environment:
+- Ensure you have Python installed (preferably Python 3.10).
+- Install the required packages. 
+
+
+### 2. Run the cells sequentially:
+- Start by running the cell to install missing packages.
+- Execute the cell to import libraries.
+- Import custom libraries to set up the paths and custom modules.
+- Set the device usage to ensure GPU (if available) is utilized.
+- Load and preprocess datasets (CIFAR-10, CIFAR-100, and SVHN etc).
+- Define and initialize the model (e.g., ResNet50).
+- Define the training and testing loops.
+- Train the model on the chosen dataset.
+- Evaluate the model using the defined metrics.
+
+### 3. Training and Evaluation:
+- Follow the provided training loop to train the model.
+- Use the testing loop to evaluate the model's performance and obtain metrics.
+
+### 4. Customization:
+- You can modify the model, dataset, training parameters, and evaluation metrics as needed by editing the respective cells.
+
+By following these steps, you should be able to run the notebook and experiment with the Bayesian Neural Network (BNN) implementation effectively.
 
 ## 3.3. Results
 
