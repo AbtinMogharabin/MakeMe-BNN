@@ -15,7 +15,7 @@ ABNN preserves the main predictive properties of DNNs while enhancing their unce
 
 <div align="center">
     <img src="Images/Brief-Evaluation.png" alt="Brief" width="800" height="320">
-    <p id= "Procedure">Figure from Franchi et al. (2024)</p>  
+    <p id= "Procedure">Figure 1: Figure from Franchi et al. (2024)</p>  
 </div>
 
 In this repository, we make an effort to reproduce the methods and results of the paper based on the descriptions provided.
@@ -26,7 +26,7 @@ The ABNN approach starts with a pre-trained DNN and transforms it into a Bayesia
 
 <div align="center">
     <img src="Images/Approach-Illustration.png" alt="Approach" width="800" height="300">
-    <p id= "Procedure">Figure from Franchi et al. (2024)</p>  
+    <p id= "Procedure">Figure 2: Figure from Franchi et al. (2024)</p>  
 </div>
 
 The key contributions of this paper are as follows:
@@ -276,6 +276,7 @@ The paper tests the ABNN approach on 9 different cases. We organized their resul
 | Image Segmentation  | StreetHazards                             | ABNN on DeepLabv3+     | -        | -        | 6.09      | 7.85      | **88.39** | 32.02     | -          | -          | 53.82     |
 | Image Segmentation  | BDD-Anomaly                               | ABNN on DeepLabv3+     | -        | -        | **14.03** | **5.98**  | **85.74** | 29.01     | -          | -          | 48.76     |
 | Image Segmentation  | MVAD                                      | ABNN on DeepLabv3+     | -        | -        | **5.58**  | 24.37     | **91.55** | **21.68** | -          | -          | **61.96** |
+**Table 1:** The paper's results.
 
 ### 3.3.2 Our implementation's results
 
@@ -294,7 +295,7 @@ The following table includes the results of our ABNN versions. The main differen
 | Image Segmentation  | StreetHazards                             | ABNN     | -        | -        | 6.12      | 7.75      | 29.25 | 32.1      | -          | -          | 50.1     |
 | Image Segmentation  | BDD-Anomaly                               | ABNN     | -        | -        | 14.05 | 5.97  | 72.65 | 29.1      | -          | -          | 46.2     |
 | Image Segmentation  | MVAD                                      | ABNN     | -        | -        | -  | -     | - | - | -          | -          | - |
-
+**Table 2:** Our implementation's results.
 
 
 We can observe that our ABNN models on ResNet-50 and WideResNet-28x10 generally show lower performance compared to the results presented in the paper, although we occasionally achieve similar or better results, particularly for FPR95. Conversely, for the segmentation models, our results closely match those in the paper.
