@@ -276,6 +276,7 @@ The paper tests the ABNN approach on 9 different cases. We organized their resul
 | Image Segmentation  | StreetHazards                             | ABNN on DeepLabv3+     | -        | -        | 6.09      | 7.85      | **88.39** | 32.02     | -          | -          | 53.82     |
 | Image Segmentation  | BDD-Anomaly                               | ABNN on DeepLabv3+     | -        | -        | **14.03** | **5.98**  | **85.74** | 29.01     | -          | -          | 48.76     |
 | Image Segmentation  | MVAD                                      | ABNN on DeepLabv3+     | -        | -        | **5.58**  | 24.37     | **91.55** | **21.68** | -          | -          | **61.96** |
+
 **Table 1:** The paper's results.
 
 ### 3.3.2 Our implementation's results
@@ -295,6 +296,7 @@ The following table includes the results of our ABNN versions. The main differen
 | Image Segmentation  | StreetHazards                             | ABNN     | -        | -        | 6.12      | 7.75      | 29.25 | 32.1      | -          | -          | 50.1     |
 | Image Segmentation  | BDD-Anomaly                               | ABNN     | -        | -        | 14.05 | 5.97  | 72.65 | 29.1      | -          | -          | 46.2     |
 | Image Segmentation  | MVAD                                      | ABNN     | -        | -        | -  | -     | - | - | -          | -          | - |
+
 **Table 2:** Our implementation's results.
 
 
