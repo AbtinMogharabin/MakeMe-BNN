@@ -260,32 +260,32 @@ For easy access, we provide a notebook with sample codes to reproduce our result
 
 ## 3.3. Results
 
-The paper tests the ABNN approach on 9 different cases. We organized their results in the following table (the columns where Result Type is Paper's Results). The bolded values show a result above or close to the past state-of-the-art models. For image classification tasks, the bolded values are the reults f the comparison of ABNN with BatchEnsemble, MIMO (ρ = 1), LPBNN, Deep Ensembles, and Laplace models. For image segmentation tasks, the results were compared with TRADI, Deep Ensembles, MIMO, BatchEnsemble, and LP-BNN.
+The paper tests the ABNN approach on 9 different cases. We organized their results in the following table (the rows where 'Result Type' is 'Paper's Results'). The bolded values show a result above or close to the past state-of-the-art models. For image classification tasks, the bolded values are the reults f the comparison of ABNN with BatchEnsemble, MIMO (ρ = 1), LPBNN, Deep Ensembles, and Laplace models. For image segmentation tasks, the results were compared with TRADI, Deep Ensembles, MIMO, BatchEnsemble, and LP-BNN.
 
-The results of our ABNN version are also given in the rows where Result Type is Our's Results. The main difference of our model and the paper is that when running the codes, we had to unfreeze some extra parameters and ran the model for more epochs than reported in the paper. This was most likely due to our problem with the weight initialization because without unfreezing the weights of other layers our models had over 20-30% lower performance in almost all metrics. Similar to the paper, we trained ResNet-50 and WideResNet-28x10 from scratch for 200 epochs (following the reported parameters in the paper). For DeepLabv3+, we used publicly available pretrained models similar to the paper. Unfortunately, due to time contraints, we weren't able to train our model on ImageNet and MVAD datasets and we only report 6 models. Below, we don't report our time consumption because we trained our models on a different device compared to the paper and we also had to unfreeze some extra parameters which made comparing the time consumption illogical.
+The results of our ABNN version are also given in the rows where 'Result Type' is 'Our Results'. The main difference of our model and the paper is that when running the codes, we had to unfreeze some extra parameters and ran the model for more epochs than reported in the paper. This was most likely due to our problem with the weight initialization because without unfreezing the weights of other layers our models had over 20-30% lower performance in almost all metrics. Similar to the paper, we trained ResNet-50 and WideResNet-28x10 from scratch for 200 epochs (following the reported parameters in the paper). For DeepLabv3+, we used publicly available pretrained models similar to the paper. Unfortunately, due to time contraints, we weren't able to train our model on ImageNet and MVAD datasets and we only report 6 models. Below, we don't report our time consumption because we trained our models on a different device compared to the paper and we also had to unfreeze some extra parameters which made comparing the time consumption illogical.
 
 
 
 | Task               | Result Type | Dataset and Model (also used for backbone training)   | Acc ↑    | NLL ↓    | ECE ↑     | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam (if only normalization weights were used) ↓   | Time (h) ↓ | mIoU ↑    |
 |--------------------|--------------------------------------------|----------|-------|--------|---------|-----------|-----------|-----------|------------|------------|-----------|
 | Image Classification | Paper's Results | CIFAR-10 - ABNN on ResNet-50     | **95.4**            | 0.215    | **0.845**| **97.0**  | **94.7**  | **15.1**  | 0.16       | **2.0**    | -         |
-| Image Classification | Our's Results | CIFAR-10 - ABNN on ResNet-50     | 87.11                 | 0.200    | 0.60     | 88.90     | 90.17     | 16.18  | 0.16    | -    | -         |
+| Image Classification | Our Results | CIFAR-10 - ABNN on ResNet-50     | 87.11                 | 0.200    | 0.60     | 88.90     | 90.17     | 16.18  | 0.16    | -    | -         |
 | Image Classification | Paper's Results | CIFAR-10 - ABNN on WideResNet-28x10     | 93.7         | 0.198    | 1.8      | **98.5**  | **96.9**  | **12.6**  | **0.05**   | **5.0**    | -         |
-| Image Classification | Our's Results | CIFAR-10 - ABNN on WideResNet-28x10     | 85.30          | 0.170    | 1.85     | 89.00     | 89.20     | 10.50  | 0.05   | -    | -         |
+| Image Classification | Our Results | CIFAR-10 - ABNN on WideResNet-28x10     | 85.30          | 0.170    | 1.85     | 89.00     | 89.20     | 10.50  | 0.05   | -    | -         |
 | Image Classification | Paper's Results | CIFAR-100 - ABNN on ResNet-50    | 78.2                | 0.889    | **5.5**  | **89.4**  | **81.1**  | **50.1**  | **0.16**   | **2.0**    | -         |
-| Image Classification | Our's Results | CIFAR-100 - ABNN on ResNet-50      | 63.0                | 0.800    | 4.6      | 77.0      | 80.5      | 50.8  | 0.16   | -    | -         |
+| Image Classification | Our Results | CIFAR-100 - ABNN on ResNet-50      | 63.0                | 0.800    | 4.6      | 77.0      | 80.5      | 50.8  | 0.16   | -    | -         |
 | Image Classification | Paper's Results | CIFAR-100 - ABNN on WideResNet-28x10   | 80.4          | 1.08     | **5.5**  | **85.0**  | **75.0**  | **57.7**    | **0.05**   | **5.0**    | -         |
-| Image Classification | Our's Results | CIFAR-100 - ABNN on WideResNet-28x10     | 75.2          | 1.00    | 4.7       | 76.8      | 70.6      | 57.7          | 0.05      |      -     | -         |
-| Image Classification | Our's Results | ImageNet - ABNN on ResNet-50     | -        | -          | -  | -      | -  | -  | -          | -          | -         |
+| Image Classification | Our Results | CIFAR-100 - ABNN on WideResNet-28x10     | 75.2          | 1.00    | 4.7       | 76.8      | 70.6      | 57.7          | 0.05      |      -     | -         |
 | Image Classification | Paper's Results | ImageNet - ABNN on ResNet-50    | **79.5** | -        | **9.65**  | 17.8      | **82.0**  | **65.2**  | -          | -          | -         |
+| Image Classification | Our Results | ImageNet - ABNN on ResNet-50     | -        | -          | -  | -      | -  | -  | -          | -          | -         |
 | Image Classification | Paper's Results | ImageNet - ABNN on ViT    | 80.6     | -        | **4.32**  | **21.7**  | **85.4**  | **55.1**  | -          | -          | -         |
-| Image Classification | Our's Results | ImageNet - ABNN on ViT     | -        | -        | -  | -  | -  | -  | -          | -          | -         |
+| Image Classification | Our Results | ImageNet - ABNN on ViT     | -        | -        | -  | -  | -  | -  | -          | -          | -         |
 | Image Segmentation  | Paper's Results | StreetHazards - ABNN on DeepLabv3+     | -        | -        | 6.09      | 7.85      | **88.39** | 32.02     | -          | -          | 53.82     |
-| Image Segmentation  | Our's Results | StreetHazards - ABNN on DeepLabv3+     | -        | -        | 6.12      | 7.75      | 79.25 | 32.1      | -          | -          | 50.1     |
+| Image Segmentation  | Our Results | StreetHazards - ABNN on DeepLabv3+     | -        | -        | 6.12      | 7.75      | 79.25 | 32.1      | -          | -          | 50.1     |
 | Image Segmentation  | Paper's Results | BDD-Anomaly - ABNN on DeepLabv3+     | -        | -        | **14.03** | **5.98**  | **85.74** | 29.01     | -          | -          | 48.76     |
-| Image Segmentation  | Our's Results | BDD-Anomaly - ABNN on DeepLabv3+     | -        | -        | 14.05 | 5.97  | 72.65 | 29.1      | -          | -          | 46.2     |
+| Image Segmentation  | Our Results | BDD-Anomaly - ABNN on DeepLabv3+     | -        | -        | 14.05 | 5.97  | 72.65 | 29.1      | -          | -          | 46.2     |
 | Image Segmentation  | Paper's Results | MVAD - ABNN on DeepLabv3+     | -        | -        | **5.58**  | 24.37     | **91.55** | **21.68** | -          | -          | **61.96** |
-| Image Segmentation  | Our's Results | MVAD - ABNN on DeepLabv3+     | -        | -        | -  | -     | - | - | -          | -          | - |
+| Image Segmentation  | Our Results | MVAD - ABNN on DeepLabv3+     | -        | -        | -  | -     | - | - | -          | -          | - |
 
 **Table 1:** The paper's and our implementation's results.
 
@@ -296,14 +296,16 @@ A key reason for this difference could be the varying backbones used. For image 
 
 Overall, since the paper did not claim that ABNN causes significant performance improvements on pretrained models, it seems logical to assume that ABNN's key property is uncertainty estimation rather than substantial performance enhancements. For example, the paper reported a 95.4% accuracy for ResNet-50 on CIFAR10. It is reasonable to assume their pretrained ResNet-50 model had an accuracy of around 95-96%. In our case, our pretrained ResNet-50 model on CIFAR10 only achieved about 90% accuracy. Therefore,  we believe it makes sense that the ABNN version did not show a sudden 6% improvement and remained around 90%. We observed similar differences between our other pretrained models.
 
-We believe that in addition to problematic normalization weights, the issue with pretrained weights could be another key factor behind the lower performance of our ABNN classification models. The fact that our segmentation models show results close to the paper supports this explanation. However, we still observe that our segmentation models show a significantly lower AUC compared to the paper.
+We believe that in addition to problematic normalization weights, the issue with pretrained weights could be another key factor behind the lower performance of our ABNN classification models. The fact that our segmentation models show results closer to the paper supports this explanation. However, we still observe that our segmentation models show a significantly lower AUC compared to the paper which should be because of our modifications to the paper's training process.
 
-The following figure demonstrates one ensemble of our CIFAR10 ABNN training on ResNet-50 for 50 apochs.
+The following figure demonstrates one ensemble of our CIFAR10 ABNN training on ResNet-50 for 50 apochs. It could be seen that our implementation of the custom loss function is performing pretty well during our ABNN training.
 
 <div align="center">
     <img src="Images/ABNN_training_resnet50_cifar10.png" alt="Approach" width="800" height="300">
     <p id="DTD">Figure 10: Sample loss curve of our ABNN implementation</p>  
 </div>
+
+Note that the paper did not share any such figures because the paper authors trained their models for a much lower number of epochs. 
 
 # 4. Conclusion
 
