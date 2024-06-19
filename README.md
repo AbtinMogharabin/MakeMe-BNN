@@ -15,7 +15,7 @@ ABNN preserves the main predictive properties of DNNs while enhancing their unce
 
 <div align="center">
     <img src="Images/Brief-Evaluation.png" alt="Brief" width="800" height="320">
-    <p id= "Procedure">Figure 1: Figure from Franchi et al. (2024)</p>  
+    <p id= "Procedure">Figure 1: Benefits of ABNN. Figure from Franchi et al. (2024)</p>  
 </div>
 
 In this repository, we make an effort to reproduce the methods and results of the paper based on the descriptions provided.
@@ -26,7 +26,7 @@ The ABNN approach starts with a pre-trained DNN and transforms it into a Bayesia
 
 <div align="center">
     <img src="Images/Approach-Illustration.png" alt="Approach" width="800" height="300">
-    <p id= "Procedure">Figure 2: Figure from Franchi et al. (2024)</p>  
+    <p id= "Procedure">Figure 2: Training process for ABNN. Figure from Franchi et al. (2024)</p>  
 </div>
 
 The key contributions of this paper are as follows:
