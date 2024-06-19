@@ -266,7 +266,7 @@ The results of our ABNN version are also given in the rows where Result Type is 
 
 
 
-| Task               | Result Type | Dataset and Model (also used for backbone training)   | Acc ↑    | NLL ↓    | ECE ↑     | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam ↓   | Time (h) ↓ | mIoU ↑    |
+| Task               | Result Type | Dataset and Model (also used for backbone training)   | Acc ↑    | NLL ↓    | ECE ↑     | AUPR ↑    | AUC ↑     | FPR95 ↓   | ΔParam (if only normalization weights were used) ↓   | Time (h) ↓ | mIoU ↑    |
 |--------------------|--------------------------------------------|----------|-------|--------|---------|-----------|-----------|-----------|------------|------------|-----------|
 | Image Classification | Paper's Results | CIFAR-10 - ABNN on ResNet-50     | **95.4** | 0.215    | **0.845** | **97.0**  | **94.7**  | **15.1**  | 0.16       | **2.0**    | -         |
 | Image Classification | Our's Results | CIFAR-10 - ABNN on ResNet-50     | 87.11 | 0.245  | 0.60    | 88.90     | 90.17     | 16.18  | 0.16    | -    | -         |
