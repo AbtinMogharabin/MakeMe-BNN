@@ -281,7 +281,7 @@ The results of our ABNN version are also given in the rows where Result Type is 
 | Image Classification | Paper's Results | ImageNet - ABNN on ViT    | 80.6     | -        | **4.32**  | **21.7**  | **85.4**  | **55.1**  | -          | -          | -         |
 | Image Classification | Our's Results | ImageNet - ABNN on ViT     | -        | -        | -  | -  | -  | -  | -          | -          | -         |
 | Image Segmentation  | Paper's Results | StreetHazards - ABNN on DeepLabv3+     | -        | -        | 6.09      | 7.85      | **88.39** | 32.02     | -          | -          | 53.82     |
-| Image Segmentation  | Our's Results | StreetHazards - ABNN on DeepLabv3+     | -        | -        | 6.12      | 7.75      | 29.25 | 32.1      | -          | -          | 50.1     |
+| Image Segmentation  | Our's Results | StreetHazards - ABNN on DeepLabv3+     | -        | -        | 6.12      | 7.75      | 79.25 | 32.1      | -          | -          | 50.1     |
 | Image Segmentation  | Paper's Results | BDD-Anomaly - ABNN on DeepLabv3+     | -        | -        | **14.03** | **5.98**  | **85.74** | 29.01     | -          | -          | 48.76     |
 | Image Segmentation  | Our's Results | BDD-Anomaly - ABNN on DeepLabv3+     | -        | -        | 14.05 | 5.97  | 72.65 | 29.1      | -          | -          | 46.2     |
 | Image Segmentation  | Paper's Results | MVAD - ABNN on DeepLabv3+     | -        | -        | **5.58**  | 24.37     | **91.55** | **21.68** | -          | -          | **61.96** |
