@@ -201,7 +201,7 @@ The paper demonstrates the efficiency of the ABNN approach to a number of differ
 
 <div align="center">
     <img src="Images/DTD.png" alt="DTD" width="800" height="200">
-    <p id="DTD">Figure 7: **Sample images from the DTD dataset</p>     
+    <p id="DTD">Figure 7: Sample images from the DTD dataset</p>     
 </div>
 
 
@@ -302,7 +302,7 @@ The following figure demonstrates one ensemble of our CIFAR10 ABNN training on R
 
 <div align="center">
     <img src="Images/ABNN_training_resnet50_cifar10.png" alt="Approach" width="800" height="300">
-    <p id="DTD">Figure 10: **Sample loss curve of our ABNN implementation</p>  
+    <p id="DTD">Figure 10: Sample loss curve of our ABNN implementation</p>  
 </div>
 
 # 4. Conclusion
