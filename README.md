@@ -287,7 +287,7 @@ The results of our ABNN version are also given in the rows where 'Result Type' i
 | Image Segmentation  | Paper's Results | MVAD - ABNN on DeepLabv3+     | -        | -        | **5.58**  | 24.37     | **91.55** | **21.68** | -          | -          | **61.96** |
 | Image Segmentation  | Our Results | MVAD - ABNN on DeepLabv3+     | -        | -        | -  | -     | - | - | -          | -          | - |
 
-**Table 1:** The paper's and our implementation's results.
+**Table 1:** The paper's and our implementation results.
 
 
 We can observe that our ABNN models on ResNet-50 and WideResNet-28x10 generally show lower performance compared to the results presented in the paper, although we occasionally achieve similar or better results, particularly for FPR95. Conversely, for the segmentation models, our results closely match those in the paper.
