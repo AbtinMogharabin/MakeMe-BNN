@@ -1,6 +1,6 @@
 # Make Me a BNN: A Simple Strategy for Estimating Bayesian Uncertainty from Pre-trained Models
 
-This readme file is an outcome of the [CENG502 (Spring 2024)](https://ceng.metu.edu.tr/~skalkan/ADL/) project for reproducing a paper without an implementation. See [CENG502 (Spring 2024) Project List](https://github.com/CENG502-Projects/CENG502-Spring2024) for a complete list of all paper reproduction projects. The public repository and commit history are available [here](https://github.com/AbtinMogharabin/MakeMe-BNN).
+This readme file is an outcome of the [CENG502 (Spring 2024)](https://ceng.metu.edu.tr/~skalkan/ADL/) project for reproducing a paper without an implementation. See [CENG502 (Spring 2024) Project List](https://github.com/CENG502-Projects/CENG502-Spring2024) for a complete list of all paper reproduction projects.
 
 
 # 1. Introduction
@@ -248,14 +248,14 @@ MakeMe-BNN
 ├── Images
 ├── notebooks
 ├── sample_usage.ipynb
-└── trained_model  -- available in our original repo
+└── trained_model
 ```
 
 To run the models, first you need to import you dataset and model of interest from `ABNN.datasets` and `ABNN.deep_learning_models`. Then, you can easily run the models using the custom functions available in `ABNN/train.py` and `ABNN/test_and_eval.py`. You can modify the model, dataset, training parameters, and evaluation metrics as needed by editing the respective cells and replacing them with your own custom ABNN version of interest. 
 
-We also share multiple pretrained weights for our different experiments in our repository [here](https://github.com/AbtinMogharabin/MakeMe-BNN).
+We also share multiple pretrained weights for our different experiments.
 
-For easy access, we provide a notebook with sample codes to reproduce our results. After cloning our repo, all you need to do is to open `sample_usage.ipynb` which include all the steps with detiled information. Then run the codes sequentially. If you want to experiment with ABNN with faster and less expensive models, we also provide a simple ABNN demo on a light CNN classifier model available in `notebooks/Simple CNN Demo`. 
+For easy access, we provide a notebook with sample codes to reproduce our results. After cloning our repo, all you need to do is to open `sample_usage.ipynb` which include all the steps with detailed information. Then, run the codes sequentially. If you want to experiment with ABNN with faster and less expensive models, we also provide a simple ABNN demo on a light CNN classifier model (using CIFAR10) available in `notebooks/Simple CNN Demo`. 
 
 
 ## 3.3. Results
@@ -309,7 +309,7 @@ Note that the paper did not share any such figures because the paper authors tra
 
 # 4. Conclusion
 
-In this project, we attempted to replicate the results of "Make Me a BNN: A Simple Strategy for Estimating Bayesian Uncertainty from Pre-trained Models" from CVPR 2024. We observed that our models generally exhibited lower performance compared to the results reported in the paper. This discrepancy was particularly evident in the results of our image classification models. We believe these differences stem from issues with the weight initialization of normalization layers and the fact that we did not have access to the exact pretrained models used in the paper. Because, based on our underestanding, ABNN's primary benefit is uncertainty estimation and it's not expected to cause dramatic performance improvements in a pretrained model. We also share the weights of our models in the original repo [here](https://github.com/AbtinMogharabin/MakeMe-BNN).
+In this project, we attempted to replicate the results of "Make Me a BNN: A Simple Strategy for Estimating Bayesian Uncertainty from Pre-trained Models" from CVPR 2024. We observed that our models generally exhibited lower performance compared to the results reported in the paper. This discrepancy was particularly evident in the results of our image classification models. We believe these differences stem from issues with the weight initialization of normalization layers and the fact that we did not have access to the exact pretrained models used in the paper. Because, based on our underestanding, ABNN's primary benefit is uncertainty estimation and it's not expected to cause dramatic performance improvements in a pretrained model. We also share the weights of our models.
 
 Overall, we implemented two key aspects of ABNN: the BNL layer and the custom loss function. The ABNN approach enhances the uncertainty quantification abilities of pretrained models, making it both computationally efficient and highly useful given the abundance of large, publicly available deterministic DNN pretrained models in the current literature.
 
